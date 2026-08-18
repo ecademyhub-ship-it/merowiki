@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-
+from phonenumber_field.modelfields import PhoneNumberField 
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.db.models import Avg
 
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name, tc, password=None, password2=None):
@@ -65,4 +68,66 @@ class user(AbstractBaseUser):
             return True
         return self.is_staff
 
-    
+class Features(models.Model):
+    CATEGORY_CHOICES = [
+            ('plumber', 'Plumber'),
+            ('electrician', 'Electrician'),
+            ('teacher', 'Teacher'),
+            ('photographer', 'Photographer'),
+            ('cleaner', 'Cleaner'),
+            ('computer_repair', 'Computer Repair'),
+            ('designer', 'Designer'),
+            ('automobile_engineer', 'Automobile Engineer'),
+        ]
+
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    name = models.CharField(max_length=100)
+    profile = models.ImageField(upload_to='photos/')  # requires Pillow
+    email = models.EmailField(max_length=255, unique=True, validators=[validate_email])
+    phone = PhoneNumberField(region="NP")
+    description = models.TextField()
+    location = models.CharField(max_length=100)
+    is_available = models.BooleanField(default=True)
+    booked_by = models.ForeignKey(
+        'User',             
+        on_delete=models.CASCADE,
+        related_name='bookings',  
+        null=True, blank=True     
+    )
+
+    def average_rating(self):
+        return self.reviews.aggregate(avg=Avg('rating'))['avg'] or 0
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = "Feature"
+        verbose_name_plural = "Features"
+
+    def __str__(self):
+        return f"{self.name} ({self.get_category_display()})"
+
+    def clean(self):
+        super().clean()
+        if self.email and not self.email.endswith(".com"):
+            raise ValidationError({"email": "Email must end with .com"})
+
+class Review(models.Model):
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    feature = models.ForeignKey(
+        'Features',
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    rating = models.PositiveSmallIntegerField()  # e.g. 1–5 stars
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.email} rated {self.feature.name} {self.rating}/5"
