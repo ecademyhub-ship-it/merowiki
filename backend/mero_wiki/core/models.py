@@ -81,8 +81,8 @@ class Features(models.Model):
         ]
 
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
-    name = models.CharField(max_length=100)
-    profile = models.ImageField(upload_to='photos/')  # requires Pillow
+    name = models.CharField(max_length=100 )
+    profile = models.ImageField(upload_to='photos/')  
     email = models.EmailField(max_length=255, unique=True, validators=[validate_email])
     phone = PhoneNumberField(region="NP")
     description = models.TextField()
@@ -122,7 +122,7 @@ class Review(models.Model):
         on_delete=models.CASCADE,
         related_name='reviews'
     )
-    rating = models.PositiveSmallIntegerField()  # e.g. 1–5 stars
+    rating = models.PositiveSmallIntegerField()  
     comment = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

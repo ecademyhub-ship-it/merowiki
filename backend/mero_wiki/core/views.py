@@ -3,7 +3,7 @@ from django.contrib import messages
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer
+from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer,FeaturesSerializer
 from django.contrib.auth import authenticate
 from .error import AccountErrorRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -130,3 +130,9 @@ class resetpasswordview(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class FeaturesView(APIView):
+    renderer_classes = [AccountErrorRenderer]
+    permission_classes = [IsAuthenticated]
+    def get (self, request):
+        serializer=FeaturesSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)

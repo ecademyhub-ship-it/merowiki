@@ -1,4 +1,4 @@
-from core.models import user
+from core.models import user,Features
 from rest_framework import serializers
 from django.utils.encoding import force_bytes, smart_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -143,3 +143,8 @@ class resetpasswordserializer(serializers.Serializer):
         User.set_password(password) 
         User.save()
         return attrs 
+
+class FeaturesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Features
+        fields = ['category','name','profile','phone','description','location','is_available']
