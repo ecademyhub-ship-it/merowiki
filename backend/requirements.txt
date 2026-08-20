@@ -1,2 +1,7 @@
 django
 djangorestframework
+dotenv
+django-cors-headers
+djangorestframework-simplejwt
+pillow
+django-phonenumber-field[phonenumbers]
