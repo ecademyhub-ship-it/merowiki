@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Services from "../pages/Services";
 import Professionals from "../pages/Professionals";
@@ -8,7 +8,13 @@ import ProfessionalDetails from "../pages/ProfessionalDetails";
 import HireNow from "../pages/HireNow";
 import Blogs from "../pages/Blogs";
 import BlogDetails from "../pages/BlogDetails";
-import LoginSignup from "../pages/LoginSignup";
+import Signup from '../pages/signup.jsx'
+import Login from '../pages/login.jsx'
+import ActivateAccount from '../pages/activate_html.jsx'
+import ProtectedRoute from "../protectedroute.jsx";
+import Emailbox from '../pages/email_form.jsx';
+import New_password from '../pages/new_password.jsx';
+import ChangePassword from "../pages/ChangePassword.jsx";
 
 
 function AppRoutes() {
@@ -17,15 +23,20 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/professionals" element={<Professionals />} />
-        <Route path="/search" element={<SearchResults />} />
-        <Route path="/hire" element={<HireNow />} />
-        <Route path="/professionals/:id"element={<ProfessionalDetails />}
+        <Route path="/professionals" element={<ProtectedRoute><Professionals /></ProtectedRoute>} />
+        <Route path="/search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
+        <Route path="/hire" element={<ProtectedRoute><HireNow /></ProtectedRoute>} />
+        <Route path="/professionals/:id"element={<ProtectedRoute><ProfessionalDetails /></ProtectedRoute>}
         
 />
 <Route path="/blogs" element={<Blogs />} />
 <Route path="/blogs/:id" element={<BlogDetails />} />
-<Route path="/login" element={<LoginSignup />} />
+<Route path="/login" element={<Login />} />
+<Route path="/signup" element={<Signup />} />
+<Route path="/activate/:uid/:token" element={<ActivateAccount />} />
+<Route path="/reset/:uid/:token" element={<New_password  />} />
+<Route path="/resetpassword" element={<Emailbox />} />
+<Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
       </Routes>
     </MainLayout>
   );

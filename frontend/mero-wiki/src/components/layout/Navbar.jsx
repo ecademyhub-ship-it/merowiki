@@ -1,13 +1,65 @@
-import { useState } from "react";
-import { Link } from "react-router";
-import { MapPin, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ChevronDown, KeyRound, LogOut, MapPin, Menu, UserCircle, X } from "lucide-react";
 import Button from "../common/Button";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("access_token");
+
+    if (!accessToken || accessToken === "null" || accessToken === "undefined") {
+      setUser(null);
+      return;
+    }
+
+    const loadUser = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/user/welcome/", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        setUser(response.data);
+      } catch {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setUser(null);
+      }
+    };
+
+    loadUser();
+  }, [location.pathname]);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    setIsProfileOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://127.0.0.1:8000/api/user/logout/",
+        { refresh: localStorage.getItem("refresh_token") },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      setUser(null);
+      closeMenu();
+      navigate("/login");
+    }
   };
 
   return (
@@ -72,13 +124,54 @@ function Navbar() {
           </nav>
         </div>
 
-        {/* Login / Signup */}
-        <div className="hidden md:block">
-          <Link to="/login">
-            <Button>
-              Login / Signup
-            </Button>
-          </Link>
+        {/* Authentication actions */}
+        <div className="hidden items-center gap-2 md:flex">
+          {user ? (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsProfileOpen((current) => !current)}
+                className="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                aria-expanded={isProfileOpen}
+              >
+                <UserCircle size={22} className="text-blue-600" />
+                <span className="max-w-32 truncate">{user.full_name}</span>
+                <ChevronDown size={16} />
+              </button>
+
+              {isProfileOpen && (
+                <div className="absolute right-0 top-full z-20 mt-2 w-52 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
+                  <Link
+                    to="/change-password"
+                    onClick={closeMenu}
+                    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    <KeyRound size={16} />
+                    Change Password
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="secondary" className="px-4 py-2">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="px-4 py-2">Signup</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -147,15 +240,39 @@ function Navbar() {
               <span>Butwal, Nepal</span>
             </div>
 
-            <Link
-              to="/login"
-              onClick={closeMenu}
-              className="mt-2 block"
-            >
-              <Button className="w-full justify-center">
-                Login / Signup
-              </Button>
-            </Link>
+            {user ? (
+              <div className="border-t border-gray-100 pt-4">
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <UserCircle size={22} className="text-blue-600" />
+                  <span>{user.full_name}</span>
+                </div>
+                <Link
+                  to="/change-password"
+                  onClick={closeMenu}
+                  className="mt-3 flex items-center gap-2 text-sm text-gray-700"
+                >
+                  <KeyRound size={16} />
+                  Change Password
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="mt-3 flex items-center gap-2 text-sm text-red-600"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="mt-2 flex gap-2">
+                <Link to="/login" onClick={closeMenu} className="flex-1">
+                  <Button variant="secondary" className="w-full justify-center">Login</Button>
+                </Link>
+                <Link to="/signup" onClick={closeMenu} className="flex-1">
+                  <Button className="w-full justify-center">Signup</Button>
+                </Link>
+              </div>
+            )}
 
           </nav>
         </div>

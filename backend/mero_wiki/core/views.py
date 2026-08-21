@@ -9,11 +9,12 @@ from .error import AccountErrorRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 from rest_framework_simplejwt.tokens import  RefreshToken
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from .models import user
+from .models import user,Features
 from .utils import send_activation_email
 
 
@@ -133,6 +134,35 @@ class resetpasswordview(APIView):
 class FeaturesView(APIView):
     renderer_classes = [AccountErrorRenderer]
     permission_classes = [IsAuthenticated]
-    def get (self, request):
-        serializer=FeaturesSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get(self, request):
+        category = request.query_params.get("category")
+        query = request.query_params.get("q")
+        location = request.query_params.get("location")
+
+        features = Features.objects.all()
+
+        # Filter by exact category
+        if category:
+            features = features.filter(category__iexact=category)
+
+        # Search service
+        if query:
+            features = features.filter(
+                Q(name__icontains=query)
+                | Q(category__icontains=query)
+                | Q(description__icontains=query)
+            )
+
+        # Filter by location
+        if location:
+            features = features.filter(
+                location__icontains=location
+            )
+
+        serializer = FeaturesSerializer(features, many=True)
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )

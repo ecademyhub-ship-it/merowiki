@@ -5,18 +5,43 @@ import {
   Phone,
   MessageCircle,
 } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import Button from "../components/common/Button";
-import { professionals } from "../data/professionals";
 
 function ProfessionalDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [professional, setProfessional] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Convert URL id from string to number
-  const professional = professionals.find(
-    (item) => item.id === Number(id)
-  );
+  useEffect(() => {
+    const fetchProfessional = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/user/features/",
+          { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
+        );
+        const feature = response.data.find((item) => String(item.id) === id);
+        if (feature) {
+          setProfessional({
+            ...feature,
+            profession: feature.category.replaceAll("_", " "),
+            available: feature.is_available,
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfessional();
+  }, [id]);
+
+  if (loading) {
+    return <main className="min-h-screen bg-gray-50 px-6 py-16 text-center">Loading professional...</main>;
+  }
 
   if (!professional) {
     return (
@@ -48,10 +73,10 @@ function ProfessionalDetails() {
     .slice(0, 2)
     .toUpperCase();
 
-  // Temporary values until we add real profile information
   const reviews = professional.reviews || 12;
 
   const about =
+    professional.description ||
     professional.about ||
     `${professional.name} provides reliable ${professional.profession.toLowerCase()} services in ${professional.location}. Contact this professional to discuss your requirements and service availability.`;
 

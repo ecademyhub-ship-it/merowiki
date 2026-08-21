@@ -145,6 +145,11 @@ class resetpasswordserializer(serializers.Serializer):
         return attrs 
 
 class FeaturesSerializer(serializers.ModelSerializer):
+    rating = serializers.SerializerMethodField()
+
+    def get_rating(self, feature):
+        return feature.average_rating()
+
     class Meta:
         model = Features
-        fields = ['category','name','profile','phone','description','location','is_available']
+        fields = ['id','category','name','profile','phone','description','location','is_available','rating']

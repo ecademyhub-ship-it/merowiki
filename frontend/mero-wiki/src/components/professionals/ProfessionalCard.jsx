@@ -1,5 +1,5 @@
 import { ArrowRight, Heart } from "lucide-react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function ProfessionalCard({

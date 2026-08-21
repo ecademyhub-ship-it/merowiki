@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import PopularServices from "../components/services/PopularServices";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import SearchBar from "../components/search/SearchBar";
