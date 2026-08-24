@@ -3,18 +3,19 @@ from django.contrib import messages
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer,FeaturesSerializer
+from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer,FeaturesSerializer,ReviewSerializer,ReviewCreateSerializer
 from django.contrib.auth import authenticate
 from .error import AccountErrorRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Q
+from django.db.models import Avg
 from rest_framework_simplejwt.tokens import  RefreshToken
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from .models import user,Features
+from .models import user,Features,Review
 from .utils import send_activation_email
 
 
@@ -133,14 +134,16 @@ class resetpasswordview(APIView):
 
 class FeaturesView(APIView):
     renderer_classes = [AccountErrorRenderer]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         category = request.query_params.get("category")
         query = request.query_params.get("q")
         location = request.query_params.get("location")
 
-        features = Features.objects.all()
+        features = Features.objects.annotate(
+            avg_rating=Avg('reviews__rating')
+        ).order_by('-avg_rating', 'name')
 
         # Filter by exact category
         if category:
@@ -166,3 +169,40 @@ class FeaturesView(APIView):
             serializer.data,
             status=status.HTTP_200_OK
         )
+
+
+class ReviewsView(APIView):
+    renderer_classes = [AccountErrorRenderer]
+
+    def get_feature(self, feature_id):
+        try:
+            return Features.objects.get(pk=feature_id)
+        except Features.DoesNotExist:
+            return None
+
+    def get(self, request, feature_id):
+        feature = self.get_feature(feature_id)
+        if feature is None:
+            return Response({'detail': 'Professional not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(ReviewSerializer(feature.reviews.all(), many=True).data)
+
+    def post(self, request, feature_id):
+        feature = self.get_feature(feature_id)
+        if feature is None:
+            return Response({'detail': 'Professional not found.'}, status=status.HTTP_404_NOT_FOUND)
+        if not request.user.is_authenticated:
+            return Response({'detail': 'Authentication is required to review a professional.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = ReviewCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        review, _ = Review.objects.update_or_create(
+            user=request.user,
+            feature=feature,
+            defaults=serializer.validated_data,
+        )
+        return Response({
+            'review': ReviewSerializer(review).data,
+            'rating': feature.average_rating(),
+            'review_count': feature.reviews.count(),
+        }, status=status.HTTP_200_OK)

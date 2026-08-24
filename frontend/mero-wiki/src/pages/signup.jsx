@@ -147,17 +147,6 @@ export default function Signup() {
           </div>
 
           <div className="field-row">
-            <label className="form-label">Gender</label>
-            <select className="select_menu" {...register("gender", { required: "Gender is required" })} defaultValue="">
-              <option value="" disabled hidden>Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            {errors.gender && <p className="error-text">{errors.gender.message}</p>}
-          </div>
-
-          <div className="field-row">
             <label className="form-label">Contact No</label>
             <input
               className="box"

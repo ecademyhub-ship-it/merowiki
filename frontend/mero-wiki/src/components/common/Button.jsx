@@ -3,6 +3,7 @@ function Button({
   variant = "primary",
   type = "button",
   onClick,
+  disabled = false,
   className = "",
 }) {
   const baseStyles =
@@ -21,6 +22,7 @@ function Button({
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${className}`}
     >
       {children}

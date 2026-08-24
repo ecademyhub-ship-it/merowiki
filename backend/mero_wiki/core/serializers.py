@@ -1,4 +1,4 @@
-from core.models import user,Features
+from core.models import user,Features,Review
 from rest_framework import serializers
 from django.utils.encoding import force_bytes, smart_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -146,10 +146,33 @@ class resetpasswordserializer(serializers.Serializer):
 
 class FeaturesSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
+    review_count = serializers.SerializerMethodField()
 
     def get_rating(self, feature):
         return feature.average_rating()
 
+    def get_review_count(self, feature):
+        return feature.reviews.count()
+
     class Meta:
         model = Features
-        fields = ['id','category','name','profile','phone','description','location','is_available','rating']
+        fields = ['id','category','name','profile','phone','description','location','is_available','rating','review_count']
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    reviewer = serializers.CharField(source='user.full_name', read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['id', 'reviewer', 'rating', 'comment', 'created_at']
+
+
+class ReviewCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+
+    def validate_rating(self, value):
+        if not 1 <= value <= 5:
+            raise serializers.ValidationError('Rating must be between 1 and 5.')
+        return value

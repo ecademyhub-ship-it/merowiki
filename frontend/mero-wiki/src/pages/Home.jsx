@@ -1,11 +1,172 @@
 import { Link } from "react-router-dom";
+import axios from "axios";
 import PopularServices from "../components/services/PopularServices";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import SearchBar from "../components/search/SearchBar";
-import { professionals } from "../data/professionals";
+import { useState } from "react";
+import { useEffect } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Truck,
+  ShieldCheck,
+  Wrench,
+  Clock,
+} from "lucide-react";
+
+const SLIDES = [
+  {
+    brand: "The only car care",
+    title: (
+      <>
+        Car Service at{" "}
+        <span className="text-brand-blue-600">Your Doorstep</span>
+      </>
+    ),
+    subtitle: "Certified experts. Genuine parts. Best prices.",
+    cta: "Book Now & Get 20% Off",
+    perks: [
+      { icon: Truck, label: "Free Pickup & Drop" },
+      { icon: ShieldCheck, label: "Genuine Parts" },
+      { icon: Wrench, label: "Expert Technicians" },
+      { icon: Clock, label: "24/7 Support" },
+    ],
+  },
+  {
+    brand: "Mero Wiki Pro",
+    title: (
+      <>
+        List Your Business &{" "}
+        <span className="text-brand-orange-500">Get Discovered</span>
+      </>
+    ),
+    subtitle:
+      "Join 5,000+ verified providers already growing on Mero Wiki.",
+    cta: "List Your Business",
+    perks: [
+      { icon: ShieldCheck, label: "Verified Badge" },
+      { icon: Clock, label: "Instant Bookings" },
+      { icon: Wrench, label: "Free Dashboard" },
+      { icon: Truck, label: "Wide Reach" },
+    ],
+  },
+];
+
+function PromoBanner() {
+  const [index, setIndex] = useState(0);
+  const slide = SLIDES[index];
+
+  const go = (dir) =>
+    setIndex((i) => (i + dir + SLIDES.length) % SLIDES.length);
+
+  return (
+    <section className="mt-8 w-full">
+      {/* Same centered width and horizontal spacing as other sections */}
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+        <div className="relative flex min-h-[190px] flex-col items-center gap-4 overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-r from-blue-50 to-white p-4 shadow-sm md:flex-row md:p-6">
+
+          {/* Previous Button */}
+          <button
+            type="button"
+            onClick={() => go(-1)}
+            aria-label="Previous promotion"
+            className="absolute left-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white shadow-card transition hover:bg-ink-100"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          {/* Promotion Content */}
+          <div className="min-w-0 flex-1 pl-6 md:pl-8">
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-brand-blue-600">
+              {slide.brand}
+            </p>
+
+            <h3 className="text-xl font-bold text-ink-900 md:text-2xl">
+              {slide.title}
+            </h3>
+
+            <p className="mt-1 text-sm text-ink-500 md:text-base">
+              {slide.subtitle}
+            </p>
+
+            <button
+              type="button"
+              className="btn-primary mt-4"
+            >
+              {slide.cta}
+            </button>
+          </div>
+
+          {/* Promotion Perks */}
+          <ul className="grid shrink-0 grid-cols-2 gap-x-6 gap-y-3 pr-4 text-sm text-ink-700 md:pr-6">
+            {slide.perks.map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="flex items-center gap-2 whitespace-nowrap"
+              >
+                <Icon
+                  size={16}
+                  className="shrink-0 text-brand-blue-600"
+                />
+                {label}
+              </li>
+            ))}
+          </ul>
+
+          {/* Next Button */}
+          <button
+            type="button"
+            onClick={() => go(1)}
+            aria-label="Next promotion"
+            className="absolute right-2 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-white shadow-card transition hover:bg-ink-100"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+
+        {/* Slider Dots */}
+        <div className="mt-3 flex justify-center gap-1.5">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIndex(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index
+                  ? "w-6 bg-brand-blue-600"
+                  : "w-1.5 bg-ink-300"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function Home() {
-  const popularProfessionals = professionals.slice(0, 3);
+  const [popularProfessionals, setPopularProfessionals] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/user/features/")
+      .then(({ data }) => {
+        const professionals = data
+          .map((feature) => ({
+            ...feature,
+            profession: feature.category.replaceAll("_", " "),
+            rating: Number(feature.rating || 0).toFixed(1),
+            available: feature.is_available,
+          }))
+          .sort((a, b) => Number(b.rating) - Number(a.rating));
+
+        setPopularProfessionals(professionals.slice(0, 3));
+      })
+      .catch((error) => {
+        console.error("Error fetching popular professionals:", error);
+      });
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -45,6 +206,9 @@ function Home() {
 
         </div>
       </section>
+
+      {/* Promotion Banner */}
+      <PromoBanner />
 
       {/* Popular Services */}
       <PopularServices />
@@ -101,9 +265,11 @@ function Home() {
 
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <div className="text-2xl">🔍</div>
+
               <h3 className="mt-2 font-semibold text-gray-900">
                 Easy to Find
               </h3>
+
               <p className="mt-1 text-sm text-gray-500">
                 Quickly search for the service you need.
               </p>
@@ -111,9 +277,11 @@ function Home() {
 
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <div className="text-2xl">⭐</div>
+
               <h3 className="mt-2 font-semibold text-gray-900">
                 Trusted Professionals
               </h3>
+
               <p className="mt-1 text-sm text-gray-500">
                 Discover professionals with useful information.
               </p>
@@ -121,9 +289,11 @@ function Home() {
 
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <div className="text-2xl">📍</div>
+
               <h3 className="mt-2 font-semibold text-gray-900">
                 Local Services
               </h3>
+
               <p className="mt-1 text-sm text-gray-500">
                 Find professionals available in your area.
               </p>

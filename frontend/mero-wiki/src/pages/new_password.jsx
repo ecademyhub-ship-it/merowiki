@@ -65,7 +65,6 @@ export default function New_password() {
 
   return (
     <>
-      <Navbar />
       <div className="signup-container">
         <p className="head">Set New Password</p>
 

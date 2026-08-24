@@ -77,7 +77,6 @@ export default function Emailbox() {
 
   return (
     <>
-      <Navbar />
       <div className="signup-container">
         <p className="head">Reset Password</p>
 
