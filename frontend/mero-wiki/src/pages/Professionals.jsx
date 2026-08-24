@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../api/client";
 import SectionHeading from "../components/common/SectionHeading";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 
@@ -16,10 +16,7 @@ function Professionals() {
   useEffect(() => {
     const fetchProfessionals = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/user/features/",
-          { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
-        );
+        const response = await apiClient.get("/features/");
         setProfessionals(response.data.map((feature) => ({
           ...feature,
           profession: feature.category.replaceAll("_", " "),

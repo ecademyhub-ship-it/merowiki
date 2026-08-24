@@ -17,6 +17,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from .models import user,Features,Review
 from .utils import send_activation_email
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from django.conf import settings
+import secrets
 
 
 def get_tokens_for_user(user):
@@ -130,6 +134,98 @@ class resetpasswordview(APIView):
         if serializer.is_valid(raise_exception=True):
             return Response({'msg':'password reset successful'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GoogleLoginView(APIView):
+    renderer_classes = [AccountErrorRenderer]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        google_token = request.data.get("token")
+
+        if not google_token:
+            return Response(
+                {"msg": "Google token is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Verify the token received from Google
+            idinfo = id_token.verify_oauth2_token(
+                google_token,
+                google_requests.Request(),
+                settings.GOOGLE_CLIENT_ID
+            )
+
+            email = idinfo.get("email")
+            full_name = idinfo.get("name", "")
+            google_id = idinfo.get("sub")
+
+            if not email or not google_id:
+                return Response(
+                    {"msg": "Google account did not provide required identity details"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Extra security check
+            if not idinfo.get("email_verified"):
+                return Response(
+                    {"msg": "Google email is not verified"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Check whether the user already exists
+            try:
+                user_obj = user.objects.get(email=email)
+
+            except user.DoesNotExist:
+                # Generate a random password because
+                # Google users will not log in using a password
+                random_password = secrets.token_urlsafe(32)
+
+                user_obj = user.objects.create_user(
+                    email=email,
+                    full_name=full_name or email.split("@")[0],
+                    tc=True,
+                    password=random_password,
+                )
+
+                # Google authentication already verified the identity
+                user_obj.is_active = True
+
+            # Keep the verified Google subject ID on the local user record.
+            user_obj.google_id = google_id
+            user_obj.save()
+
+            # Generate the SAME SimpleJWT tokens
+            token = get_tokens_for_user(user_obj)
+
+            return Response(
+                {
+                    "msg": "Google login successful",
+                    "token": token,
+                    "user": {
+                        "id": user_obj.id,
+                        "email": user_obj.email,
+                        "full_name": user_obj.full_name,
+                        "google_id": google_id,
+                    }
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except ValueError:
+            return Response(
+                {"msg": "Invalid or expired Google token"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        except Exception as e:
+            print("Google Login Error:", str(e))
+
+            return Response(
+                {"msg": "Google login failed"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class FeaturesView(APIView):

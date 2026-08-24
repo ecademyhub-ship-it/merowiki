@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../api/client";
 import Button from "../components/common/Button";
 
 function ProfessionalDetails() {
@@ -24,10 +24,9 @@ function ProfessionalDetails() {
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
-        const headers = { Authorization: `Bearer ${localStorage.getItem("access_token")}` };
         const [response, reviewsResponse] = await Promise.all([
-          axios.get("http://localhost:8000/api/user/features/", { headers }),
-          axios.get(`http://localhost:8000/api/user/features/${id}/reviews/`, { headers }),
+          apiClient.get("/features/"),
+          apiClient.get(`/features/${id}/reviews/`),
         ]);
         const feature = response.data.find((item) => String(item.id) === id);
         if (feature) {
@@ -100,11 +99,10 @@ function ProfessionalDetails() {
     try {
       setIsSubmittingReview(true);
       setReviewError("");
-      const response = await axios.post(
-        `http://localhost:8000/api/user/features/${id}/reviews/`,
-        { rating: reviewRating, comment: reviewComment },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
-      );
+      const response = await apiClient.post(`/features/${id}/reviews/`, {
+        rating: reviewRating,
+        comment: reviewComment,
+      });
       setProfessional((current) => ({
         ...current,
         rating: response.data.rating,

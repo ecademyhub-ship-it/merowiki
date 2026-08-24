@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../../api/client";
 import { ChevronDown, KeyRound, LogOut, MapPin, Menu, UserCircle, X } from "lucide-react";
 import Button from "../common/Button";
 
@@ -21,9 +21,7 @@ function Navbar() {
 
     const loadUser = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/user/welcome/", {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
+        const response = await apiClient.get("/welcome/");
         setUser(response.data);
       } catch {
         localStorage.removeItem("access_token");
@@ -42,14 +40,9 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        "http://127.0.0.1:8000/api/user/logout/",
+      await apiClient.post(
+        "/logout/",
         { refresh: localStorage.getItem("refresh_token") },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        }
       );
     } catch (error) {
       console.error("Logout failed:", error);

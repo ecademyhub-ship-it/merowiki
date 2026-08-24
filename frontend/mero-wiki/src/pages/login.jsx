@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './signup.css';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import GoogleAuth from "../components/common/googleauth.jsx";
 
 
 export default function Login() {
@@ -87,14 +88,18 @@ export default function Login() {
             {errors.password && <p className="error-text">{errors.password.message}</p>}
           </div>
           <p className="mt-3">
-            <Link to="/resetpassword" style={{textDecoration: "none",color: "black"}}>Forget password?</Link>
+            <Link to="/resetpassword" style={{ textDecoration: "none", color: "black" }}>Forget password?</Link>
           </p>
 
           <button className="primary-button" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Logging in..." : "Login"}
           </button>
 
-          
+          <div className="auth-divider">
+            <span>OR</span>
+          </div>
+
+          <GoogleAuth />
         </form>
       </div>
     </>

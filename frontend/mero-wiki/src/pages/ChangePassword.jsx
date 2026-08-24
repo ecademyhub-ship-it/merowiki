@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../api/client";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./signup.css";
@@ -29,18 +29,12 @@ function ChangePassword() {
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/change_password/",
+      const response = await apiClient.post(
+        "/change_password/",
         {
           old_password: data.old_password,
           new_password: data.new_password,
           confirm_password: data.confirm_password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            "Content-Type": "application/json",
-          },
         }
       );
 

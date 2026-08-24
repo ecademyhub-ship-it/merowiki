@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../api/client";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import Button from "../components/common/Button";
 
@@ -49,14 +49,7 @@ function SearchResults() {
           params.set("location", locationTerm);
         }
 
-        const response = await axios.get(
-          `http://localhost:8000/api/user/features/?${params.toString()}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+        const response = await apiClient.get(`/features/?${params.toString()}`);
 
         setFeatures(response.data.map((feature) => ({
           ...feature,

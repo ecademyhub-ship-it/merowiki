@@ -42,6 +42,13 @@ class user(AbstractBaseUser):
         unique=True,
     )
     full_name = models.CharField(max_length=255)
+    google_id = models.CharField(
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True
+    )
+
     tc=models.BooleanField()
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

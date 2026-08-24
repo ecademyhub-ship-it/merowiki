@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import GoogleAuth from "../components/common/googleauth.jsx";
 
 
 export default function Signup() {
@@ -67,7 +68,7 @@ export default function Signup() {
           </div>
         )}
 
-       
+
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -162,6 +163,12 @@ export default function Signup() {
           <button className="primary-button" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Creating account..." : "Create account"}
           </button>
+
+          <div className="auth-divider">
+            <span>OR</span>
+          </div>
+
+          <GoogleAuth />
         </form>
       </div>
     </>
