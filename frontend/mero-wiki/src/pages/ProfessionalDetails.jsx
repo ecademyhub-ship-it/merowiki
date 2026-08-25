@@ -20,6 +20,7 @@ function ProfessionalDetails() {
   const [reviewError, setReviewError] = useState("");
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [profileImageFailed, setProfileImageFailed] = useState(false);
 
   useEffect(() => {
     const fetchProfessional = async () => {
@@ -41,6 +42,7 @@ function ProfessionalDetails() {
         console.error("Error fetching professional:", error);
       } finally {
         setLoading(false);
+        setProfileImageFailed(false);
         setReviewRating(0);
         setReviews([]);
         setReviewComment("");
@@ -88,6 +90,15 @@ function ProfessionalDetails() {
     professional.description ||
     professional.about ||
     `${professional.name} provides reliable ${professional.profession.toLowerCase()} services in ${professional.location}. Contact this professional to discuss your requirements and service availability.`;
+
+  const backendOrigin = apiClient.defaults.baseURL
+    ? new URL(apiClient.defaults.baseURL).origin
+    : "";
+  const profileImageUrl = professional.profile
+    ? professional.profile.startsWith("http")
+      ? professional.profile
+      : `${backendOrigin}${professional.profile}`
+    : "";
 
   const contactPhone =
     professional.phone ||
@@ -152,8 +163,17 @@ function ProfessionalDetails() {
             <div className="flex flex-col gap-6 sm:flex-row">
 
               {/* Avatar */}
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-blue-50 text-2xl font-bold text-blue-600">
-                {initials}
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-2xl font-bold text-blue-600">
+                {profileImageUrl && !profileImageFailed ? (
+                  <img
+                    src={profileImageUrl}
+                    alt={professional.name}
+                    className="h-full w-full object-cover"
+                    onError={() => setProfileImageFailed(true)}
+                  />
+                ) : (
+                  initials
+                )}
               </div>
 
               {/* Information */}

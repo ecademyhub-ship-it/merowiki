@@ -157,6 +157,7 @@ function Home() {
             ...feature,
             profession: feature.category.replaceAll("_", " "),
             rating: Number(feature.rating || 0).toFixed(1),
+            profile: feature.profile,
             available: feature.is_available,
           }))
           .sort((a, b) => Number(b.rating) - Number(a.rating));
@@ -239,6 +240,7 @@ function Home() {
                 profession={professional.profession}
                 rating={professional.rating}
                 location={professional.location}
+                profile={professional.profile}
                 available={professional.available}
               />
             ))}
