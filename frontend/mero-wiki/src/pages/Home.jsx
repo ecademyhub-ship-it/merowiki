@@ -3,8 +3,8 @@ import axios from "axios";
 import PopularServices from "../components/services/PopularServices";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import SearchBar from "../components/search/SearchBar";
+import { professionals } from "../data/professionals";
 import { useState } from "react";
-import { useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
