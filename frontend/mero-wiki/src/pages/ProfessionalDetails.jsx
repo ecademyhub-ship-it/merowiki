@@ -89,6 +89,15 @@ function ProfessionalDetails() {
     professional.about ||
     `${professional.name} provides reliable ${professional.profession.toLowerCase()} services in ${professional.location}. Contact this professional to discuss your requirements and service availability.`;
 
+  const contactPhone =
+    professional.phone ||
+    professional.phone_number ||
+    professional.contact_number ||
+    "";
+  const phoneDigits = contactPhone.replace(/\D/g, "");
+  const telHref = contactPhone ? `tel:${contactPhone.replace(/\s+/g, "")}` : "";
+  const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : "";
+
   const submitReview = async (event) => {
     event.preventDefault();
     if (!reviewRating) {
@@ -270,7 +279,7 @@ function ProfessionalDetails() {
 
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
 
-              <Button className="gap-2">
+              <Button href={telHref} className="gap-2" disabled={!telHref}>
                 <Phone size={17} />
                 Contact Professional
               </Button>
@@ -278,9 +287,13 @@ function ProfessionalDetails() {
               <Button
                 variant="secondary"
                 className="gap-2"
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                disabled={!whatsappHref}
               >
                 <MessageCircle size={17} />
-                Send Message
+                Send WhatsApp
               </Button>
 
             </div>

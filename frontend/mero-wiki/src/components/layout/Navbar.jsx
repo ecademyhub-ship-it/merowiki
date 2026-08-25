@@ -101,13 +101,6 @@ function Navbar() {
             </Link>
 
             <Link
-              to="/hire"
-              className="text-sm font-medium text-gray-700 hover:text-blue-600"
-            >
-              Hire Now
-            </Link>
-
-            <Link
               to="/blogs"
               className="text-sm font-medium text-gray-700 hover:text-blue-600"
             >

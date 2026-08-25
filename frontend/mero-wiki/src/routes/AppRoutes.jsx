@@ -5,7 +5,6 @@ import Professionals from "../pages/Professionals";
 import MainLayout from "../layouts/MainLayout";
 import SearchResults from "../pages/SearchResults";
 import ProfessionalDetails from "../pages/ProfessionalDetails";
-import HireNow from "../pages/HireNow";
 import Blogs from "../pages/Blogs";
 import BlogDetails from "../pages/BlogDetails";
 import Signup from '../pages/signup.jsx'
@@ -25,7 +24,6 @@ function AppRoutes() {
         <Route path="/services" element={<Services />} />
         <Route path="/professionals" element={<ProtectedRoute><Professionals /></ProtectedRoute>} />
         <Route path="/search" element={<ProtectedRoute><SearchResults /></ProtectedRoute>} />
-        <Route path="/hire" element={<ProtectedRoute><HireNow /></ProtectedRoute>} />
         <Route path="/professionals/:id"element={<ProtectedRoute><ProfessionalDetails /></ProtectedRoute>}
         
 />
