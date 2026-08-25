@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MapPin, Search } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 function SearchBar() {
   const [service, setService] = useState("");

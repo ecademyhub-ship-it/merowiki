@@ -3,6 +3,10 @@ function Button({
   variant = "primary",
   type = "button",
   onClick,
+  href,
+  target,
+  rel,
+  disabled = false,
   className = "",
 }) {
   const baseStyles =
@@ -17,10 +21,26 @@ function Button({
       "text-blue-600 hover:bg-blue-50",
   };
 
+  if (href) {
+    return (
+      <a
+        href={href}
+        target={target}
+        rel={rel}
+        aria-disabled={disabled}
+        onClick={disabled ? (event) => event.preventDefault() : onClick}
+        className={`${baseStyles} ${variants[variant]} ${disabled ? "cursor-not-allowed opacity-50" : ""} ${className}`}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${className}`}
     >
       {children}

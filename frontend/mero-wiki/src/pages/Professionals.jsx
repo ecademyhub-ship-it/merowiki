@@ -1,14 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import apiClient from "../api/client";
 import SectionHeading from "../components/common/SectionHeading";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
-import { professionals } from "../data/professionals";
 
 function Professionals() {
+  const [professionals, setProfessionals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [serviceFilter, setServiceFilter] = useState("all");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [sortBy, setSortBy] = useState("rating-desc");
+
+  useEffect(() => {
+    const fetchProfessionals = async () => {
+      try {
+        const response = await apiClient.get("/features/");
+        setProfessionals(response.data.map((feature) => ({
+          ...feature,
+          profession: feature.category.replaceAll("_", " "),
+          rating: feature.rating || 0,
+          available: feature.is_available,
+        })));
+      } catch (error) {
+        console.error("Error fetching professionals:", error);
+        setLoadError("Unable to load professionals right now.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfessionals();
+  }, []);
 
   const filteredProfessionals = professionals.filter((professional) => {
     const search = searchTerm.toLowerCase();
@@ -71,6 +95,14 @@ function Professionals() {
     serviceFilter !== "all" ||
     availabilityFilter !== "all" ||
     sortBy !== "rating-desc";
+
+  if (loading) {
+    return <main className="min-h-screen bg-gray-50 px-6 py-16 text-center">Loading professionals...</main>;
+  }
+
+  if (loadError) {
+    return <main className="min-h-screen bg-gray-50 px-6 py-16 text-center text-red-600">{loadError}</main>;
+  }
 
   return (
     <main className="min-h-screen bg-gray-50">

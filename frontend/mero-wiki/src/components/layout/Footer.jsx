@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -14,7 +14,7 @@ function Footer() {
               Mero Wiki
             </h2>
 
-            <p className="mt-3 max-w-xs text-sm leading-6 text-blue-100">
+            <p className="mt-3 max-w-xs text-sm leading-6">
               Find trusted professionals and local services near you.
             </p>
           </div>
@@ -25,17 +25,17 @@ function Footer() {
               Services
             </h3>
 
-            <div className="mt-3 space-y-2 text-sm text-blue-100">
-              <Link
+            <div className="mt-3 space-y-2 text-sm">
+              <Link 
                 to="/services"
-                className="block hover:text-white"
+                className="block text-white hover:text-white"
               >
                 All Services
               </Link>
 
               <Link
                 to="/professionals"
-                className="block hover:text-white"
+                className="block text-white hover:text-white"
               >
                 Professionals
               </Link>
@@ -48,24 +48,24 @@ function Footer() {
               Mero Wiki
             </h3>
 
-            <div className="mt-3 space-y-2 text-sm text-blue-100">
+            <div className="mt-3 space-y-2 text-sm">
               <Link
                 to="/"
-                className="block hover:text-white"
+                className="block text-white hover:text-white"
               >
                 Home
               </Link>
 
               <Link
                 to="/services"
-                className="block hover:text-white"
+                className="block hover:text-white text-white"
               >
                 Services
               </Link>
 
               <Link
                 to="/professionals"
-                className="block hover:text-white"
+                className="block text-white hover:text-white"
               >
                 Find Professionals
               </Link>
@@ -78,7 +78,7 @@ function Footer() {
               Contact: 
              ecademyhub@gmail.com            </h3>
 
-            <p className="mt-3 text-sm leading-6 text-blue-100">
+            <p className="mt-3 text-sm leading-6">
               Find reliable local professionals for your everyday needs.
             </p>
           </div>
@@ -86,7 +86,7 @@ function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-8 border-t border-blue-500 pt-5 text-center text-sm text-blue-100">
+        <div className="mt-8 border-t border-blue-500 pt-5 text-center text-sm">
           © {new Date().getFullYear()} Mero Wiki. All rights reserved.
         </div>
 

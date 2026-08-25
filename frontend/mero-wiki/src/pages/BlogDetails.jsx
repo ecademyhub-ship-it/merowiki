@@ -1,5 +1,5 @@
 import { ArrowLeft, CalendarDays } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { blogs } from "../data/blogs";
 import Button from "../components/common/Button";
 

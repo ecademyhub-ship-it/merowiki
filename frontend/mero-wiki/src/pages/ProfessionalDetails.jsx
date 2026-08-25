@@ -5,18 +5,56 @@ import {
   Phone,
   MessageCircle,
 } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../api/client";
 import Button from "../components/common/Button";
-import { professionals } from "../data/professionals";
 
 function ProfessionalDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [professional, setProfessional] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [profileImageFailed, setProfileImageFailed] = useState(false);
 
-  // Convert URL id from string to number
-  const professional = professionals.find(
-    (item) => item.id === Number(id)
-  );
+  useEffect(() => {
+    const fetchProfessional = async () => {
+      try {
+        const [response, reviewsResponse] = await Promise.all([
+          apiClient.get("/features/"),
+          apiClient.get(`/features/${id}/reviews/`),
+        ]);
+        const feature = response.data.find((item) => String(item.id) === id);
+        if (feature) {
+          setProfessional({
+            ...feature,
+            profession: feature.category.replaceAll("_", " "),
+            available: feature.is_available,
+          });
+          setReviews(reviewsResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching professional:", error);
+      } finally {
+        setLoading(false);
+        setProfileImageFailed(false);
+        setReviewRating(0);
+        setReviews([]);
+        setReviewComment("");
+      }
+    };
+
+    fetchProfessional();
+  }, [id]);
+
+  if (loading) {
+    return <main className="min-h-screen bg-gray-50 px-6 py-16 text-center">Loading professional...</main>;
+  }
 
   if (!professional) {
     return (
@@ -48,12 +86,60 @@ function ProfessionalDetails() {
     .slice(0, 2)
     .toUpperCase();
 
-  // Temporary values until we add real profile information
-  const reviews = professional.reviews || 12;
-
   const about =
+    professional.description ||
     professional.about ||
     `${professional.name} provides reliable ${professional.profession.toLowerCase()} services in ${professional.location}. Contact this professional to discuss your requirements and service availability.`;
+
+  const backendOrigin = apiClient.defaults.baseURL
+    ? new URL(apiClient.defaults.baseURL).origin
+    : "";
+  const profileImageUrl = professional.profile
+    ? professional.profile.startsWith("http")
+      ? professional.profile
+      : `${backendOrigin}${professional.profile}`
+    : "";
+
+  const contactPhone =
+    professional.phone ||
+    professional.phone_number ||
+    professional.contact_number ||
+    "";
+  const phoneDigits = contactPhone.replace(/\D/g, "");
+  const telHref = contactPhone ? `tel:${contactPhone.replace(/\s+/g, "")}` : "";
+  const whatsappHref = phoneDigits ? `https://wa.me/${phoneDigits}` : "";
+
+  const submitReview = async (event) => {
+    event.preventDefault();
+    if (!reviewRating) {
+      setReviewError("Please select a star rating.");
+      return;
+    }
+
+    try {
+      setIsSubmittingReview(true);
+      setReviewError("");
+      const response = await apiClient.post(`/features/${id}/reviews/`, {
+        rating: reviewRating,
+        comment: reviewComment,
+      });
+      setProfessional((current) => ({
+        ...current,
+        rating: response.data.rating,
+        review_count: response.data.review_count,
+      }));
+      setReviews((current) => [
+        response.data.review,
+        ...current.filter((review) => review.id !== response.data.review.id),
+      ]);
+      setReviewRating(0);
+      setReviewComment("");
+    } catch (error) {
+      setReviewError(error.response?.data?.detail || "Unable to submit your review.");
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -77,8 +163,17 @@ function ProfessionalDetails() {
             <div className="flex flex-col gap-6 sm:flex-row">
 
               {/* Avatar */}
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-blue-50 text-2xl font-bold text-blue-600">
-                {initials}
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-2xl font-bold text-blue-600">
+                {profileImageUrl && !profileImageFailed ? (
+                  <img
+                    src={profileImageUrl}
+                    alt={professional.name}
+                    className="h-full w-full object-cover"
+                    onError={() => setProfileImageFailed(true)}
+                  />
+                ) : (
+                  initials
+                )}
               </div>
 
               {/* Information */}
@@ -124,7 +219,7 @@ function ProfessionalDetails() {
                     </span>
 
                     <span>
-                      ({reviews} reviews)
+                      ({professional.review_count || reviews.length} reviews)
                     </span>
                   </span>
 
@@ -163,6 +258,39 @@ function ProfessionalDetails() {
             </div>
           </div>
 
+          {/* Reviews */}
+          <div className="border-t border-gray-100 p-6 sm:p-8">
+            <h2 className="text-xl font-semibold text-gray-900">Reviews</h2>
+
+            <form onSubmit={submitReview} className="mt-4 rounded-xl bg-gray-50 p-4">
+              <p className="text-sm font-medium text-gray-700">Rate this professional</p>
+              <div className="mt-2 flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setReviewRating(star)}
+                    aria-label={`${star} star${star === 1 ? "" : "s"}`}
+                    className="text-2xl text-yellow-400"
+                  >
+                    <Star size={24} className={star <= reviewRating ? "fill-current" : ""} />
+                  </button>
+                ))}
+              </div>
+              <textarea
+                value={reviewComment}
+                onChange={(event) => setReviewComment(event.target.value)}
+                placeholder="Write a review (optional)"
+                rows={3}
+                className="mt-3 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
+              />
+              {reviewError && <p className="mt-2 text-sm text-red-600">{reviewError}</p>}
+              <Button type="submit" className="mt-3" disabled={isSubmittingReview}>
+                {isSubmittingReview ? "Submitting..." : "Submit Review"}
+              </Button>
+            </form>
+          </div>
+
           {/* Contact */}
           <div className="border-t border-gray-100 bg-gray-50 p-6 sm:p-8">
             <h2 className="text-lg font-semibold text-gray-900">
@@ -171,7 +299,7 @@ function ProfessionalDetails() {
 
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
 
-              <Button className="gap-2">
+              <Button href={telHref} className="gap-2" disabled={!telHref}>
                 <Phone size={17} />
                 Contact Professional
               </Button>
@@ -179,9 +307,13 @@ function ProfessionalDetails() {
               <Button
                 variant="secondary"
                 className="gap-2"
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                disabled={!whatsappHref}
               >
                 <MessageCircle size={17} />
-                Send Message
+                Send WhatsApp
               </Button>
 
             </div>

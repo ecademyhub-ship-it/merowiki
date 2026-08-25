@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import PopularServices from "../components/services/PopularServices";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import SearchBar from "../components/search/SearchBar";
@@ -145,7 +146,28 @@ function PromoBanner() {
 }
 
 function Home() {
-  const popularProfessionals = professionals.slice(0, 3);
+  const [popularProfessionals, setPopularProfessionals] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/user/features/")
+      .then(({ data }) => {
+        const professionals = data
+          .map((feature) => ({
+            ...feature,
+            profession: feature.category.replaceAll("_", " "),
+            rating: Number(feature.rating || 0).toFixed(1),
+            profile: feature.profile,
+            available: feature.is_available,
+          }))
+          .sort((a, b) => Number(b.rating) - Number(a.rating));
+
+        setPopularProfessionals(professionals.slice(0, 3));
+      })
+      .catch((error) => {
+        console.error("Error fetching popular professionals:", error);
+      });
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -218,6 +240,7 @@ function Home() {
                 profession={professional.profession}
                 rating={professional.rating}
                 location={professional.location}
+                profile={professional.profile}
                 available={professional.available}
               />
             ))}
