@@ -29,7 +29,7 @@ function SearchBar() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-2 sm:flex-row">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-2 sm:flex-row ">
 
       {/* Service */}
       <div className="flex flex-[2] items-center rounded-lg border border-gray-300 bg-white px-4 shadow-sm">

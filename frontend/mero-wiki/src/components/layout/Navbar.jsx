@@ -56,7 +56,7 @@ function Navbar() {
   };
 
   return (
-    <header className="w-full border-b border-gray-100 bg-white">
+    <header className="w-full border-b border-gray-100 bg-white max-h-16">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
         {/* Logo */}
