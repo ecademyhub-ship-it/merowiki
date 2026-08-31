@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   Wrench,
   Clock,
+  Search,
+  Star,
+  MapPin,
 } from "lucide-react";
 
 const SLIDES = [
@@ -207,9 +210,7 @@ function Home() {
 
         </div>
       </section>
-
-      {/* Promotion Banner */}
-      <PromoBanner />
+       
 
       {/* Popular Services */}
       <PopularServices />
@@ -265,38 +266,44 @@ function Home() {
 
           <div className="mt-5 grid gap-4 sm:grid-cols-3">
 
-            <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-              <div className="text-2xl">🔍</div>
+            <div className="rounded-lg border border-gray-200 bg-white p-6 text-center transition hover:shadow-md hover:border-blue-400">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 mx-auto">
+                <Search className="h-7 w-7 text-blue-600" />
+              </div>
 
-              <h3 className="mt-2 font-semibold text-gray-900">
+              <h3 className="mt-4 font-semibold text-gray-900">
                 Easy to Find
               </h3>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500">
                 Quickly search for the service you need.
               </p>
             </div>
 
-            <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-              <div className="text-2xl">⭐</div>
+            <div className="rounded-lg border border-gray-200 bg-white p-6 text-center transition hover:shadow-md hover:border-amber-400">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 mx-auto">
+                <Star className="h-7 w-7 text-amber-600" />
+              </div>
 
-              <h3 className="mt-2 font-semibold text-gray-900">
+              <h3 className="mt-4 font-semibold text-gray-900">
                 Trusted Professionals
               </h3>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500">
                 Discover professionals with useful information.
               </p>
             </div>
 
-            <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
-              <div className="text-2xl">📍</div>
+            <div className="rounded-lg border border-gray-200 bg-white p-6 text-center transition hover:shadow-md hover:border-green-400">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-50 mx-auto">
+                <MapPin className="h-7 w-7 text-green-600" />
+              </div>
 
-              <h3 className="mt-2 font-semibold text-gray-900">
+              <h3 className="mt-4 font-semibold text-gray-900">
                 Local Services
               </h3>
 
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500">
                 Find professionals available in your area.
               </p>
             </div>

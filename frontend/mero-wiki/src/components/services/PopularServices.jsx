@@ -1,19 +1,9 @@
 import { Link } from "react-router-dom";
+import * as LucideIcons from "lucide-react";
 import { services } from "../../data/services";
 
 function PopularServices() {
   const popularServices = services.slice(0, 8);
-
-  const searchAliases = {
-    Electrical: "Electrician",
-    Plumbing: "Plumber",
-    Education: "Tutor",
-    Photography: "Photographer",
-    Cleaning: "Cleaner",
-    "Computer Repairer": "Computer Repairer",
-    Designer: "Designer",
-    Automotive: "Automotive",
-  };
 
   return (
     <section className="bg-gray-50 py-8">
@@ -36,18 +26,17 @@ function PopularServices() {
         {/* Services */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
           {popularServices.map((service) => {
-            const searchTerm =
-              searchAliases[service.title] || service.title;
+            const IconComponent = LucideIcons[service.icon] || LucideIcons.Wrench;
 
             return (
               <Link
                 key={service.id}
-                to={`/search?q=${encodeURIComponent(searchTerm)}`}
+                to={`/search?category=${encodeURIComponent(service.category)}`}
                 className="group flex min-h-[120px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-3 text-center transition hover:border-blue-400 hover:shadow-sm"
               >
                 {/* Icon */}
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-xl transition group-hover:bg-blue-100">
-                  {service.icon}
+                <div className={`flex h-12 w-12 items-center justify-center rounded-full ${service.color} transition group-hover:scale-110`}>
+                  <IconComponent className={`h-6 w-6 ${service.iconColor}`} />
                 </div>
 
                 {/* Title */}

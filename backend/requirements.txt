@@ -5,3 +5,5 @@ django-cors-headers
 djangorestframework-simplejwt
 pillow
 django-phonenumber-field[phonenumbers]
+gunicorn
+psycopg2-binary

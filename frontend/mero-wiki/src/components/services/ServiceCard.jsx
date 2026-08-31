@@ -1,29 +1,20 @@
 import { Link } from "react-router-dom";
+import * as LucideIcons from "lucide-react";
 
-function ServiceCard({ icon, title, description }) {
-  const searchAliases = {
-    Electrical: "electrician",
-    Plumbing: "plumber",
-    Education: "teacher",
-    Photography: "photographer",
-    Cleaning: "cleaner",
-    "Computer Repairer": "computer_repair",
-    Designer: "designer",
-    Automotive: "automobile_engineer",
-  };
-
-  const category = searchAliases[title] || title;
+function ServiceCard({ icon, title, description, category, color, iconColor }) {
+  // Get the icon component from lucide-react
+  const IconComponent = LucideIcons[icon] || LucideIcons.Wrench;
 
   return (
     <Link
       to={`/search?category=${encodeURIComponent(category)}`}
       className="group"
     >
-      <div className="flex h-full flex-col items-center rounded-lg border border-gray-200 bg-white px-4 py-6 text-center transition hover:border-blue-400 hover:shadow-md">
+      <div className="flex h-full flex-col items-center rounded-lg border border-gray-200 bg-white px-4 py-6 text-center transition hover:border-blue-400 hover:shadow-lg">
         
         {/* Category Icon */}
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-2xl transition group-hover:bg-blue-100">
-          {icon}
+        <div className={`flex h-14 w-14 items-center justify-center rounded-full ${color} transition group-hover:scale-110`}>
+          <IconComponent className={`h-7 w-7 ${iconColor}`} />
         </div>
 
         {/* Category Title */}

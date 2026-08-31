@@ -77,15 +77,70 @@ class user(AbstractBaseUser):
 
 class Features(models.Model):
     CATEGORY_CHOICES = [
-            ('plumber', 'Plumber'),
-            ('electrician', 'Electrician'),
-            ('teacher', 'Teacher'),
-            ('photographer', 'Photographer'),
-            ('cleaner', 'Cleaner'),
-            ('computer_repair', 'Computer Repair'),
-            ('designer', 'Designer'),
-            ('automobile_engineer', 'Automobile Engineer'),
-        ]
+    # Existing professions
+    ('plumber', 'Plumber'),
+    ('electrician', 'Electrician'),
+    ('teacher', 'Teacher'),
+    ('photographer', 'Photographer'),
+    ('cleaner', 'Cleaner'),
+    ('computer_repair', 'Computer Repair'),
+    ('designer', 'Designer'),
+    ('automobile_engineer', 'Automobile Engineer'),
+    ('barber', 'Barber'),
+
+    # Home & Repair Services
+    ('carpenter', 'Carpenter'),
+    ('painter', 'Painter'),
+    ('mason', 'Mason'),
+    ('welder', 'Welder'),
+    ('tile_worker', 'Tile Worker'),
+    ('roofer', 'Roof Repair Specialist'),
+    ('locksmith', 'Locksmith'),
+    ('pest_control', 'Pest Control Specialist'),
+    ('ac_repair', 'AC Repair Technician'),
+    ('refrigerator_repair', 'Refrigerator Repair Technician'),
+    ('washing_machine_repair', 'Washing Machine Repair'),
+    ('water_tank_cleaner', 'Water Tank Cleaner'),
+
+    # Vehicle Services
+    ('motorcycle_mechanic', 'Motorcycle Mechanic'),
+    ('car_mechanic', 'Car Mechanic'),
+    ('bike_washer', 'Bike Washing Service'),
+    ('car_washer', 'Car Washing Service'),
+
+    # Technology Services
+    ('mobile_repair', 'Mobile Repair Technician'),
+    ('laptop_repair', 'Laptop Repair Technician'),
+    ('software_developer', 'Software Developer'),
+    ('web_developer', 'Web Developer'),
+    ('network_technician', 'Network Technician'),
+    ('cctv_technician', 'CCTV Technician'),
+
+    # Education
+    ('home_tutor', 'Home Tutor'),
+    ('language_tutor', 'Language Tutor'),
+    ('music_teacher', 'Music Teacher'),
+    ('dance_teacher', 'Dance Teacher'),
+
+    # Beauty & Personal Care
+    ('beautician', 'Beautician'),
+    ('makeup_artist', 'Makeup Artist'),
+    ('hair_stylist', 'Hair Stylist'),
+    ('massage_therapist', 'Massage Therapist'),
+
+    # Events & Creative
+    ('videographer', 'Videographer'),
+    ('event_planner', 'Event Planner'),
+    ('dj', 'DJ'),
+    ('catering_service', 'Catering Service'),
+    ('cook', 'Cook'),
+
+    # Professional Services
+    ('accountant', 'Accountant'),
+    ('lawyer', 'Lawyer'),
+    ('translator', 'Translator'),
+    ('real_estate_agent', 'Real Estate Agent'),
+    ]
 
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     name = models.CharField(max_length=100 )
