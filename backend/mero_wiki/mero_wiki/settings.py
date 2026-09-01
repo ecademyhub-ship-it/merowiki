@@ -93,8 +93,12 @@ WSGI_APPLICATION = 'mero_wiki.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DBNAME'),
+        'USER': os.environ.get('DBUSER'),
+        'PASSWORD': os.environ.get('DBPASS'),
+        'HOST': os.environ.get('DBHOST'),
+        'PORT': os.environ.get('DBPORT'),
     }
 }
 
@@ -142,11 +146,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
 
 AUTH_USER_MODEL = "core.user"
 
@@ -167,13 +166,13 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_ENABLED": True,
 }
 
-# EMAIL_BACKEND = os.environ.get("EmailBackend")
-# EMAIL_HOST = os,environ.get("EMAIL_HOST")
-# EMAIL_PORT = os.environ.get("EMAIL_PORT")
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get("EMAIL_NAME")
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-# DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_NAME")
+EMAIL_BACKEND = os.environ.get("EmailBackend")
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_NAME")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_NAME")
 
 
 PASSWORD_RESET_TIMEOUT = 3600
