@@ -13,7 +13,7 @@ export const services = [
   // Home & Repair Services
   { id: "carpenter", icon: "Hammer", color: "bg-orange-50", iconColor: "text-orange-600", title: "Carpenter", category: "carpenter", description: "Skilled carpenters for woodwork, furniture, and construction." },
   { id: "painter", icon: "PaintBucket", color: "bg-indigo-50", iconColor: "text-indigo-600", title: "Painter", category: "painter", description: "Professional painters for interior and exterior painting." },
-  { id: "mason", icon: "Hammer", color: "bg-gray-50", iconColor: "text-gray-600", title: "Mason", category: "mason", description: "Expert masons for construction, walls, and masonry work." },
+  { id: "mason", icon: "Brick", color: "bg-amber-50", iconColor: "text-amber-700", title: "Mason", category: "mason", description: "Expert masons for construction, walls, and masonry work." },
   { id: "welder", icon: "Flame", color: "bg-red-50", iconColor: "text-red-600", title: "Welder", category: "welder", description: "Professional welding and metal work services." },
   { id: "tile_worker", icon: "Grid3x3", color: "bg-cyan-50", iconColor: "text-cyan-600", title: "Tile Worker", category: "tile_worker", description: "Expert tile installation and repair services." },
   { id: "roofer", icon: "Home", color: "bg-blue-50", iconColor: "text-blue-600", title: "Roof Repair", category: "roofer", description: "Professional roofing and roof repair services." },
@@ -62,12 +62,54 @@ export const services = [
   { id: "lawyer", icon: "Scale", color: "bg-indigo-50", iconColor: "text-indigo-600", title: "Lawyer", category: "lawyer", description: "Expert legal consultation and services." },
   { id: "translator", icon: "Languages", color: "bg-blue-50", iconColor: "text-blue-600", title: "Translator", category: "translator", description: "Professional translation and interpretation services." },
   { id: "real_estate_agent", icon: "Home", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Real Estate Agent", category: "real_estate_agent", description: "Expert real estate and property services." },
+
+  // Domestic & Household Services
+  { id: "maid", icon: "Users", color: "bg-orange-50", iconColor: "text-orange-600", title: "Maid/Domestic Helper", category: "maid", description: "Professional domestic cleaning and household management services." },
+  { id: "nanny", icon: "Heart", color: "bg-pink-50", iconColor: "text-pink-600", title: "Nanny/Babysitter", category: "nanny", description: "Reliable childcare and babysitting services." },
+  { id: "elderly_care", icon: "Heart", color: "bg-rose-50", iconColor: "text-rose-600", title: "Elderly Care", category: "elderly_care", description: "Professional elderly care and health support services." },
+  { id: "gardener", icon: "Leaf", color: "bg-green-50", iconColor: "text-green-600", title: "Gardener", category: "gardener", description: "Expert gardening and landscaping services." },
+  { id: "house_mover", icon: "Truck", color: "bg-blue-50", iconColor: "text-blue-600", title: "House Moving", category: "house_mover", description: "Professional house moving and relocation services." },
+  { id: "florist", icon: "Flower2", color: "bg-fuchsia-50", iconColor: "text-fuchsia-600", title: "Florist", category: "florist", description: "Beautiful floral arrangements and flower delivery services." },
+
+  // Fashion & Tailoring
+  { id: "tailor", icon: "Scissors", color: "bg-purple-50", iconColor: "text-purple-600", title: "Tailor/Dressmaker", category: "tailor", description: "Expert tailoring and custom clothing services." },
+  { id: "cobbler", icon: "Shoe", color: "bg-amber-50", iconColor: "text-amber-600", title: "Cobbler/Shoemaker", category: "cobbler", description: "Professional shoe repair and custom shoemaking services." },
+  { id: "leather_worker", icon: "Briefcase", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Leather Worker", category: "leather_worker", description: "Expert leather crafting and repair services." },
+
+  // Health & Wellness
+  { id: "nurse", icon: "Heart", color: "bg-red-50", iconColor: "text-red-600", title: "Nurse/Health Worker", category: "nurse", description: "Professional nursing and health support services." },
+  { id: "yoga_instructor", icon: "Zap", color: "bg-indigo-50", iconColor: "text-indigo-600", title: "Yoga Instructor", category: "yoga_instructor", description: "Expert yoga training and wellness instruction." },
+  { id: "fitness_trainer", icon: "Zap", color: "bg-red-50", iconColor: "text-red-600", title: "Fitness Trainer", category: "fitness_trainer", description: "Professional fitness coaching and training services." },
+  { id: "physiotherapist", icon: "Heart", color: "bg-orange-50", iconColor: "text-orange-600", title: "Physiotherapist", category: "physiotherapist", description: "Expert physiotherapy and physical rehabilitation services." },
+  { id: "veterinarian", icon: "Paw", color: "bg-teal-50", iconColor: "text-teal-600", title: "Veterinarian", category: "veterinarian", description: "Professional veterinary care and animal health services." },
+  { id: "astrologer", icon: "Star", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Astrologer", category: "astrologer", description: "Professional astrology consultation and predictions." },
+
+  // Energy & Utilities
+  { id: "geyezer_maintenance", icon: "Flame", color: "bg-orange-50", iconColor: "text-orange-600", title: "Geyezer Maintenance", category: "geyezer_maintenance", description: "Expert geyezer installation and maintenance services." },
+  { id: "generator_repair", icon: "Zap", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Generator Repair", category: "generator_repair", description: "Professional generator repair and maintenance services." },
+  { id: "solar_technician", icon: "Sun", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Solar Panel Technician", category: "solar_technician", description: "Expert solar panel installation and maintenance." },
+  { id: "water_purification", icon: "Droplet", color: "bg-cyan-50", iconColor: "text-cyan-600", title: "Water Purification", category: "water_purification", description: "Professional water purification and treatment services." },
+
+  // Skilled Crafts
+  { id: "blacksmith", icon: "Anvil", color: "bg-zinc-50", iconColor: "text-zinc-800", title: "Blacksmith", category: "blacksmith", description: "Expert metalwork and blacksmithing services." },
+  { id: "woodcarver", icon: "Hammer", color: "bg-orange-50", iconColor: "text-orange-700", title: "Woodcarver", category: "woodcarver", description: "Professional wood carving and artistic services." },
+  { id: "metalworker", icon: "Cog", color: "bg-stone-50", iconColor: "text-stone-700", title: "Metalworker", category: "metalworker", description: "Expert metal fabrication and metalwork services." },
+  { id: "pottery_maker", icon: "Palette", color: "bg-orange-50", iconColor: "text-orange-600", title: "Pottery Maker", category: "pottery_maker", description: "Professional pottery crafting and ceramic services." },
+
+  // Logistics & Transportation
+  { id: "courier_service", icon: "Package", color: "bg-blue-50", iconColor: "text-blue-600", title: "Courier Service", category: "courier_service", description: "Reliable courier and delivery services." },
+  { id: "transport_service", icon: "Truck", color: "bg-green-50", iconColor: "text-green-600", title: "Transport Service", category: "transport_service", description: "Professional transportation and logistics services." },
+
+  // Sports & Recreation
+  { id: "sports_trainer", icon: "Zap", color: "bg-green-50", iconColor: "text-green-600", title: "Sports Trainer", category: "sports_trainer", description: "Professional sports coaching and athletic training." },
+  { id: "martial_arts_trainer", icon: "Zap", color: "bg-red-50", iconColor: "text-red-600", title: "Martial Arts Trainer", category: "martial_arts_trainer", description: "Expert martial arts instruction and training." },
+  { id: "swimming_coach", icon: "Droplet", color: "bg-blue-50", iconColor: "text-blue-600", title: "Swimming Coach", category: "swimming_coach", description: "Professional swimming instruction and coaching services." },
 ];
 
 export const categoryGroups = [
   {
     group: "Home & Repair Services",
-    categories: ["carpenter", "painter", "mason", "welder", "tile_worker", "roofer", "locksmith", "pest_control", "ac_repair", "refrigerator_repair", "washing_machine_repair", "water_tank_cleaner"]
+    categories: ["carpenter", "painter", "tile_worker", "roofer", "locksmith", "pest_control", "ac_repair", "refrigerator_repair", "washing_machine_repair", "water_tank_cleaner"]
   },
   {
     group: "Vehicle Services",
@@ -96,5 +138,33 @@ export const categoryGroups = [
   {
     group: "Basic Services",
     categories: ["plumber", "electrician", "cleaner", "computer_repair", "automobile_engineer"]
+  },
+  {
+    group: "Domestic & Household Services",
+    categories: ["maid", "nanny", "elderly_care", "gardener", "house_mover", "florist"]
+  },
+  {
+    group: "Fashion & Tailoring",
+    categories: ["tailor", "cobbler", "leather_worker"]
+  },
+  {
+    group: "Health & Wellness",
+    categories: ["nurse", "yoga_instructor", "fitness_trainer", "physiotherapist", "veterinarian", "astrologer"]
+  },
+  {
+    group: "Energy & Utilities",
+    categories: ["geyezer_maintenance", "generator_repair", "solar_technician", "water_purification"]
+  },
+  {
+    group: "Skilled Crafts",
+    categories: ["blacksmith", "woodcarver", "metalworker", "pottery_maker", "mason", "welder"]
+  },
+  {
+    group: "Logistics & Transportation",
+    categories: ["courier_service", "transport_service"]
+  },
+  {
+    group: "Sports & Recreation",
+    categories: ["sports_trainer", "martial_arts_trainer", "swimming_coach"]
   },
 ];
