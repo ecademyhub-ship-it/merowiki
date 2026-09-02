@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import GoogleAuth from "../components/common/googleauth.jsx";
+import { USER_API } from "../config/api";
 
 
 export default function Signup() {
@@ -20,7 +21,7 @@ export default function Signup() {
   const onSubmit = async (data) => {
     setMessage({ text: "", type: "" });
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/user/register/", {
+      const response = await axios.post(`${USER_API}/register/`, {
         email: data.email,
         full_name: data.fullname,
         password: data.password,

@@ -5,6 +5,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./signup.css";
 import Navbar from "../components/layout/Navbar.jsx";
+import { USER_API } from "../config/api";
 
 export default function New_password() {
   const { uid, token } = useParams();
@@ -32,7 +33,7 @@ export default function New_password() {
 
     try {
       const resp = await axios.post(
-        `http://localhost:8000/api/user/pass_reset/${uid}/${token}/`,
+        `${USER_API}/pass_reset/${uid}/${token}/`,
         { password: data.new_password, password2: data.confirm_password },
         { headers: { "Content-Type": "application/json" } }
       );

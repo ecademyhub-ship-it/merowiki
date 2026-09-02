@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./signup.css";
+import { USER_API } from "../config/api";
 
 export default function ActivateAccount() {
     const { uid, token } = useParams();
@@ -17,7 +18,7 @@ export default function ActivateAccount() {
 
             try {
                 const response = await axios.get(
-                    `http://localhost:8000/api/user/activate/${uid}/${token}/`
+                    `${USER_API}/activate/${uid}/${token}/`
                 );
                 setStatus("success");
                 setMessage(response.data.msg);

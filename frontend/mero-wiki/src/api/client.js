@@ -1,7 +1,8 @@
 import axios from "axios";
+import { USER_API } from "../config/api";
 
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/user",
+  baseURL: USER_API,
   headers: {
     "Content-Type": "application/json",
   },
@@ -43,7 +44,7 @@ apiClient.interceptors.response.use(
 
     try {
       refreshPromise ??= axios
-        .post("http://127.0.0.1:8000/api/user/token/refresh/", {
+        .post(`${USER_API}/token/refresh/`, {
           refresh: refreshToken,
         })
         .then(({ data }) => {

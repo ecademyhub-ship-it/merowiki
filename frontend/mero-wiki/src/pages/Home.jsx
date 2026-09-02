@@ -153,7 +153,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/user/features/")
+      .get(`${API_URL}/api/user/features/`)
       .then(({ data }) => {
         const professionals = data
           .map((feature) => ({

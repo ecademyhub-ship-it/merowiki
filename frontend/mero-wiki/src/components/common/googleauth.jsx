@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
+import { USER_API } from "../../config/api";
 
 export default function GoogleAuth() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ export default function GoogleAuth() {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/google-login/",
+        `${USER_API}/google-login/`,
         {
           token: credentialResponse.credential,
         },
