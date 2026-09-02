@@ -4,7 +4,7 @@ import PopularServices from "../components/services/PopularServices";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
 import SearchBar from "../components/search/SearchBar";
 import { professionals } from "../data/professionals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,6 +16,7 @@ import {
   Star,
   MapPin,
 } from "lucide-react";
+import { API_URL } from "../config/api";
 
 const SLIDES = [
   {
