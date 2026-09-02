@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import "./signup.css";
 import axios from "axios";
 import Navbar from "../components/layout/Navbar.jsx";
+import { USER_API } from "../config/api";
 
 export default function Emailbox() {
   const {
@@ -20,7 +21,7 @@ export default function Emailbox() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/reset/",
+        `${USER_API}/reset/`,
         { email: data.email },
         { headers: { "Content-Type": "application/json" } }
       );

@@ -140,6 +140,48 @@ class Features(models.Model):
     ('lawyer', 'Lawyer'),
     ('translator', 'Translator'),
     ('real_estate_agent', 'Real Estate Agent'),
+
+    # Domestic & Household Services
+    ('maid', 'Maid/Domestic Helper'),
+    ('nanny', 'Nanny/Babysitter'),
+    ('elderly_care', 'Elderly Care'),
+    ('gardener', 'Gardener'),
+    ('house_mover', 'House Moving Service'),
+    ('florist', 'Florist'),
+
+    # Fashion & Tailoring
+    ('tailor', 'Tailor/Dressmaker'),
+    ('cobbler', 'Cobbler/Shoemaker'),
+    ('leather_worker', 'Leather Worker'),
+
+    # Health & Wellness
+    ('nurse', 'Nurse/Health Worker'),
+    ('yoga_instructor', 'Yoga Instructor'),
+    ('fitness_trainer', 'Fitness Trainer'),
+    ('physiotherapist', 'Physiotherapist'),
+    ('veterinarian', 'Veterinarian'),
+    ('astrologer', 'Astrologer'),
+
+    # Energy & Utilities
+    ('geyezer_maintenance', 'Geyezer Maintenance'),
+    ('generator_repair', 'Generator Repair'),
+    ('solar_technician', 'Solar Panel Technician'),
+    ('water_purification', 'Water Purification Technician'),
+
+    # Skilled Crafts
+    ('blacksmith', 'Blacksmith'),
+    ('woodcarver', 'Woodcarver'),
+    ('metalworker', 'Metalworker'),
+    ('pottery_maker', 'Pottery Maker'),
+
+    # Logistics & Transportation
+    ('courier_service', 'Courier Service'),
+    ('transport_service', 'Transport Service'),
+
+    # Sports & Recreation
+    ('sports_trainer', 'Sports Trainer'),
+    ('martial_arts_trainer', 'Martial Arts Trainer'),
+    ('swimming_coach', 'Swimming Coach'),
     ]
 
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)

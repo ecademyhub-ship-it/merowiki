@@ -1,6 +1,7 @@
 import { ArrowRight, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { API_URL } from "../../config/api";
 
 function ProfessionalCard({
   id,
@@ -50,7 +51,7 @@ function ProfessionalCard({
   const profileImageUrl = profile
     ? profile.startsWith("http")
       ? profile
-      : `http://localhost:8000${profile}`
+      : `${API_URL}${profile}`
     : "";
 
   const handleFavorite = (event) => {
