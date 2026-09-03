@@ -42,7 +42,7 @@ class UserView(APIView):
             new_user = serializer.save()
             uid = urlsafe_base64_encode(force_bytes(new_user.pk))
             token = default_token_generator.make_token(new_user)
-            activation_url = f"http://localhost:5173/activate/{uid}/{token}/"
+            activation_url = f"https://merowiki.com/activate/{uid}/{token}/"
             send_activation_email(new_user.email, activation_url)
             return Response({'msg': 'Registration successful. Please check your email to activate your account.'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
