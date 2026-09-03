@@ -64,7 +64,7 @@ function PromoBanner() {
     setIndex((i) => (i + dir + SLIDES.length) % SLIDES.length);
 
   return (
-    <section className="mt-8 w-full">
+    <section className="mt-5 w-full">
       {/* Same centered width and horizontal spacing as other sections */}
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="relative flex min-h-[190px] flex-col items-center gap-4 overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-r from-blue-50 to-white p-4 shadow-sm md:flex-row md:p-6">
@@ -177,12 +177,12 @@ function Home() {
     <main className="min-h-screen bg-gray-50">
 
       {/* Search Section */}
-      <section className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-7">
 
           {/* Small Heading */}
           <div className="mb-4 text-center">
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-extrabold tracking-tight text-ink-900 sm:text-2xl">
               Find professionals near you
             </h1>
           </div>
@@ -191,7 +191,7 @@ function Home() {
           <SearchBar />
 
           {/* Quick Services */}
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <div className="mt-3 flex flex-wrap justify-center gap-1.5 sm:gap-2">
             {[
               "Electrical",
               "Plumbing",
@@ -202,7 +202,7 @@ function Home() {
               <Link
                 key={service}
                 to={`/search?service=${encodeURIComponent(service)}`}
-                className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs text-gray-600 transition hover:border-blue-500 hover:text-blue-600"
+                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600"
               >
                 {service}
               </Link>
@@ -217,8 +217,8 @@ function Home() {
       <PopularServices />
 
       {/* Popular Professionals */}
-      <section className="bg-white py-8">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="bg-white py-7 sm:py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-900">
@@ -233,7 +233,7 @@ function Home() {
             </Link>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {popularProfessionals.map((professional) => (
               <ProfessionalCard
                 key={professional.id}
@@ -252,8 +252,8 @@ function Home() {
       </section>
 
       {/* Why Mero Wiki */}
-      <section className="border-t border-gray-200 bg-gray-50 py-8">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <section className="border-t border-slate-200 bg-slate-50 py-7 sm:py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900">

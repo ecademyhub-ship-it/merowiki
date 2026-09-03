@@ -101,12 +101,16 @@ class Features(models.Model):
     ('refrigerator_repair', 'Refrigerator Repair Technician'),
     ('washing_machine_repair', 'Washing Machine Repair'),
     ('water_tank_cleaner', 'Water Tank Cleaner'),
+    ('toilet_tank_cleaner', 'Toilet Tank Cleaner'),
+    ('interior_designer', 'Interior Designer'),
 
     # Vehicle Services
     ('motorcycle_mechanic', 'Motorcycle Mechanic'),
     ('car_mechanic', 'Car Mechanic'),
     ('bike_washer', 'Bike Washing Service'),
     ('car_washer', 'Car Washing Service'),
+    ('car_rental', 'Car Rental'),
+    ('bike_rental', 'Bike Rental'),
 
     # Technology Services
     ('mobile_repair', 'Mobile Repair Technician'),
@@ -134,6 +138,11 @@ class Features(models.Model):
     ('dj', 'DJ'),
     ('catering_service', 'Catering Service'),
     ('cook', 'Cook'),
+    ('bhajan_toli', 'Bhajan Toli'),
+    ('band_baja', 'Band Baja'),
+    ('panche_baja', 'Panche Baja'),
+    ('flower_decorator', 'Flower Decorator'),
+    ('half_catering', 'Half Catering'),
 
     # Professional Services
     ('accountant', 'Accountant'),

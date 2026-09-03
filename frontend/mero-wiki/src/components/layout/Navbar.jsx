@@ -56,8 +56,8 @@ function Navbar() {
   };
 
   return (
-    <header className="relative z-50 w-full max-h-none border-b border-gray-100 bg-white md:max-h-16">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-3 md:px-6">
+    <header className="relative z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         <div className="flex items-center gap-2 md:contents">
           {/* Mobile Menu Button */}
@@ -77,14 +77,14 @@ function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="text-lg font-bold tracking-tight text-blue-600 md:text-2xl"
+            className="text-lg font-extrabold tracking-tight text-brand-blue-600 md:text-xl"
           >
             Mero Wiki
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
 
           {/* Location */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -93,7 +93,7 @@ function Navbar() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex items-center gap-7">
+          <nav className="flex items-center gap-5">
 
             <Link
               to="/"
@@ -199,7 +199,7 @@ function Navbar() {
             className="fixed inset-0 z-40 animate-[menuBackdropIn_200ms_ease-out] bg-black/30 md:hidden"
             aria-label="Close menu"
           />
-          <div className="absolute left-0 top-0 z-50 w-1/2 max-w-xs animate-[menuDrawerIn_250ms_ease-out] overflow-y-auto rounded-br-xl border border-gray-100 bg-white px-5 pb-5 pt-16 shadow-2xl md:max-h-[calc(100dvh-5rem)] md:hidden">
+          <div className="absolute left-0 top-0 z-50 w-[min(82vw,20rem)] animate-[menuDrawerIn_250ms_ease-out] overflow-y-auto rounded-br-xl border border-slate-100 bg-white px-4 pb-5 pt-16 shadow-2xl md:max-h-[calc(100dvh-5rem)] md:hidden">
 
             <nav className="flex flex-col gap-1">
 

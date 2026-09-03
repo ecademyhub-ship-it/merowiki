@@ -1,5 +1,52 @@
 @import "tailwindcss";
 
+@theme {
+	--font-sans: "Manrope", "Avenir Next", sans-serif;
+	--color-brand-blue-600: #1769e0;
+	--color-brand-orange-500: #f28a2e;
+	--color-ink-900: #162033;
+	--color-ink-700: #42506a;
+	--color-ink-500: #71809a;
+	--color-ink-300: #c8d0dc;
+	--color-ink-100: #f1f5f9;
+	--shadow-card: 0 10px 28px rgba(28, 54, 92, 0.08);
+}
+
+:root {
+	font-family: "Manrope", "Avenir Next", sans-serif;
+	color: #162033;
+	background: #f7f9fc;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	background: #f7f9fc;
+}
+
+button,
+a,
+input {
+	-webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+	transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease,
+		box-shadow 160ms ease, transform 160ms ease;
+}
+
+::selection {
+	color: #fff;
+	background: #1769e0;
+}
+
 @keyframes menuDrawerIn {
 	from {
 		opacity: 0;
