@@ -108,6 +108,12 @@ DATABASES = {
         'PORT': os.environ.get('DBPORT'),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
@@ -163,6 +169,7 @@ REST_FRAMEWORK = {
     )
 }
 
+SITE_NAME="Mero Wiki"
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
