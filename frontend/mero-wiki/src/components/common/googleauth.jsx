@@ -34,7 +34,7 @@ export default function GoogleAuth() {
         );
       }
 
-      navigate("/professionals");
+      navigate("/");
 
     } catch (error) {
       console.error(

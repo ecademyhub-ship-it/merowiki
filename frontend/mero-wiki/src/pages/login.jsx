@@ -35,7 +35,7 @@ export default function Login() {
         localStorage.setItem("refresh_token", token.refresh);
       }
       setMessage({ text: response.data.msg || "Login successful", type: "success" });
-      navigate("/professionals");
+      navigate("/");
     } catch (err) {
       if (err.response?.data?.errors) {
         const errors = err.response.data.errors;

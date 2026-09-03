@@ -56,16 +56,32 @@ function Navbar() {
   };
 
   return (
-    <header className="w-full border-b border-gray-100 bg-white max-h-16">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+    <header className="relative z-50 w-full max-h-none border-b border-gray-100 bg-white md:max-h-16">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-3 md:px-6">
 
-        {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold tracking-tight text-blue-600"
-        >
-          Mero Wiki
-        </Link>
+        <div className="flex items-center gap-2 md:contents">
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="relative z-[60] rounded-lg border border-gray-200 p-1.5 text-gray-700 hover:bg-gray-50 md:hidden"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? (
+              <X size={21} />
+            ) : (
+              <Menu size={21} />
+            )}
+          </button>
+
+          {/* Logo */}
+          <Link
+            to="/"
+            className="text-lg font-bold tracking-tight text-blue-600 md:text-2xl"
+          >
+            Mero Wiki
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-8 md:flex">
@@ -160,31 +176,37 @@ function Navbar() {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="rounded-lg border border-gray-200 p-2 text-gray-700 hover:bg-gray-50 md:hidden"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {isMenuOpen ? (
-            <X size={21} />
-          ) : (
-            <Menu size={21} />
-          )}
-        </button>
+        {!user && (
+          <div className="flex items-center gap-1 md:hidden">
+            <Link to="/login" onClick={closeMenu}>
+              <Button variant="secondary" className="px-2 py-1.5 text-xs">
+                Login
+              </Button>
+            </Link>
+            <Link to="/signup" onClick={closeMenu}>
+              <Button className="px-2 py-1.5 text-xs">Signup</Button>
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="border-t border-gray-100 px-6 py-5 md:hidden">
+        <>
+          <button
+            type="button"
+            onClick={closeMenu}
+            className="fixed inset-0 z-40 animate-[menuBackdropIn_200ms_ease-out] bg-black/30 md:hidden"
+            aria-label="Close menu"
+          />
+          <div className="absolute left-0 top-0 z-50 w-1/2 max-w-xs animate-[menuDrawerIn_250ms_ease-out] overflow-y-auto rounded-br-xl border border-gray-100 bg-white px-5 pb-5 pt-16 shadow-2xl md:max-h-[calc(100dvh-5rem)] md:hidden">
 
-          <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-1">
 
             <Link
               to="/"
               onClick={closeMenu}
-              className="text-sm font-medium text-gray-700"
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${location.pathname === "/" ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"}`}
             >
               Home
             </Link>
@@ -192,7 +214,7 @@ function Navbar() {
             <Link
               to="/services"
               onClick={closeMenu}
-              className="text-sm font-medium text-gray-700"
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${location.pathname === "/services" ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"}`}
             >
               Services
             </Link>
@@ -200,28 +222,21 @@ function Navbar() {
             <Link
               to="/professionals"
               onClick={closeMenu}
-              className="text-sm font-medium text-gray-700"
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${location.pathname.startsWith("/professionals") ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"}`}
             >
               Professionals
             </Link>
 
-            <Link
-              to="/hire"
-              onClick={closeMenu}
-              className="text-sm font-medium text-gray-700"
-            >
-              Hire Now
-            </Link>
 
             <Link
               to="/blogs"
               onClick={closeMenu}
-              className="text-sm font-medium text-gray-700"
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${location.pathname.startsWith("/blogs") ? "bg-blue-50 text-blue-700" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"}`}
             >
               Blogs
             </Link>
 
-            <div className="flex items-center gap-2 pt-2 text-sm text-gray-500">
+            <div className="mt-3 flex items-center gap-2 border-t border-gray-100 px-3 pt-4 text-sm text-gray-500">
               <MapPin size={16} />
               <span>Butwal, Nepal</span>
             </div>
@@ -249,19 +264,11 @@ function Navbar() {
                   Logout
                 </button>
               </div>
-            ) : (
-              <div className="mt-2 flex gap-2">
-                <Link to="/login" onClick={closeMenu} className="flex-1">
-                  <Button variant="secondary" className="w-full justify-center">Login</Button>
-                </Link>
-                <Link to="/signup" onClick={closeMenu} className="flex-1">
-                  <Button className="w-full justify-center">Signup</Button>
-                </Link>
-              </div>
-            )}
+            ) : null}
 
-          </nav>
-        </div>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );
