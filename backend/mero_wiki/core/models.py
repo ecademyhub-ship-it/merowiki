@@ -101,12 +101,16 @@ class Features(models.Model):
     ('refrigerator_repair', 'Refrigerator Repair Technician'),
     ('washing_machine_repair', 'Washing Machine Repair'),
     ('water_tank_cleaner', 'Water Tank Cleaner'),
+    ('toilet_tank_cleaner', 'Toilet Tank Cleaner'),
+    ('interior_designer', 'Interior Designer'),
 
     # Vehicle Services
     ('motorcycle_mechanic', 'Motorcycle Mechanic'),
     ('car_mechanic', 'Car Mechanic'),
     ('bike_washer', 'Bike Washing Service'),
     ('car_washer', 'Car Washing Service'),
+    ('car_rental', 'Car Rental'),
+    ('bike_rental', 'Bike Rental'),
 
     # Technology Services
     ('mobile_repair', 'Mobile Repair Technician'),
@@ -134,6 +138,11 @@ class Features(models.Model):
     ('dj', 'DJ'),
     ('catering_service', 'Catering Service'),
     ('cook', 'Cook'),
+    ('bhajan_toli', 'Bhajan Toli'),
+    ('band_baja', 'Band Baja'),
+    ('panche_baja', 'Panche Baja'),
+    ('flower_decorator', 'Flower Decorator'),
+    ('half_catering', 'Half Catering'),
 
     # Professional Services
     ('accountant', 'Accountant'),
@@ -187,6 +196,11 @@ class Features(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     name = models.CharField(max_length=100 )
     profile = models.ImageField(upload_to='photos/')  
+    work_photo_1 = models.ImageField(upload_to='photos/', blank=True, null=True)
+    work_photo_2 = models.ImageField(upload_to='photos/', blank=True, null=True)
+    work_photo_3 = models.ImageField(upload_to='photos/', blank=True, null=True)
+    work_photo_4 = models.ImageField(upload_to='photos/', blank=True, null=True)
+    work_photo_5 = models.ImageField(upload_to='photos/', blank=True, null=True)
     email = models.EmailField(max_length=255, unique=True, validators=[validate_email])
     phone = PhoneNumberField(region="NP")
     description = models.TextField()

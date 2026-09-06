@@ -267,6 +267,22 @@ class FeaturesView(APIView):
         )
 
 
+class LocationsView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        locations = (
+            Features.objects
+            .exclude(location__isnull=True)
+            .exclude(location__exact="")
+            .values_list("location", flat=True)
+            .distinct()
+            .order_by("location")
+        )
+
+        return Response(list(locations), status=status.HTTP_200_OK)
+
+
 class ReviewsView(APIView):
     renderer_classes = [AccountErrorRenderer]
 

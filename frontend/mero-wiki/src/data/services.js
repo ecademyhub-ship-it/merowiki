@@ -23,12 +23,16 @@ export const services = [
   { id: "refrigerator_repair", icon: "Refrigerator", color: "bg-blue-50", iconColor: "text-blue-600", title: "Refrigerator Repair", category: "refrigerator_repair", description: "Professional refrigerator repair and maintenance services." },
   { id: "washing_machine_repair", icon: "Droplet", color: "bg-cyan-50", iconColor: "text-cyan-600", title: "Washing Machine Repair", category: "washing_machine_repair", description: "Expert washing machine repair and service." },
   { id: "water_tank_cleaner", icon: "Droplets", color: "bg-teal-50", iconColor: "text-teal-600", title: "Water Tank Cleaner", category: "water_tank_cleaner", description: "Professional water tank cleaning services." },
+  { id: "toilet_tank_cleaner", icon: "Droplets", color: "bg-cyan-50", iconColor: "text-cyan-600", title: "Toilet Tank Cleaner", category: "toilet_tank_cleaner", description: "Reliable toilet and septic tank cleaning services." },
+  { id: "interior_designer", icon: "Palette", color: "bg-violet-50", iconColor: "text-violet-600", title: "Interior Designer", category: "interior_designer", description: "Creative interior planning, styling, and renovation services." },
 
   // Vehicle Services
   { id: "motorcycle_mechanic", icon: "Bike", color: "bg-red-50", iconColor: "text-red-600", title: "Motorcycle Mechanic", category: "motorcycle_mechanic", description: "Expert motorcycle repair and maintenance." },
   { id: "car_mechanic", icon: "Wrench", color: "bg-orange-50", iconColor: "text-orange-600", title: "Car Mechanic", category: "car_mechanic", description: "Professional car repair and mechanical services." },
   { id: "bike_washer", icon: "Bike", color: "bg-green-50", iconColor: "text-green-600", title: "Bike Washing", category: "bike_washer", description: "Professional bike and motorcycle washing services." },
   { id: "car_washer", icon: "Droplet", color: "bg-blue-50", iconColor: "text-blue-600", title: "Car Washing", category: "car_washer", description: "Professional car washing and detailing services." },
+  { id: "car_rental", icon: "Car", color: "bg-sky-50", iconColor: "text-sky-600", title: "Car Rental", category: "car_rental", description: "Convenient cars for short-term and long-term rental." },
+  { id: "bike_rental", icon: "Bike", color: "bg-lime-50", iconColor: "text-lime-600", title: "Bike Rental", category: "bike_rental", description: "Affordable bikes and motorcycles for local travel." },
 
   // Technology Services
   { id: "mobile_repair", icon: "Smartphone", color: "bg-purple-50", iconColor: "text-purple-600", title: "Mobile Repair", category: "mobile_repair", description: "Expert mobile phone repair and service." },
@@ -56,6 +60,11 @@ export const services = [
   { id: "dj", icon: "Volume2", color: "bg-green-50", iconColor: "text-green-600", title: "DJ", category: "dj", description: "Professional DJ services for events and parties." },
   { id: "catering_service", icon: "UtensilsCrossed", color: "bg-orange-50", iconColor: "text-orange-600", title: "Catering", category: "catering_service", description: "Professional catering and food services." },
   { id: "cook", icon: "ChefHat", color: "bg-red-50", iconColor: "text-red-600", title: "Cook", category: "cook", description: "Expert cooking and culinary services." },
+  { id: "bhajan_toli", icon: "Music", color: "bg-violet-50", iconColor: "text-violet-600", title: "Bhajan Toli", category: "bhajan_toli", description: "Devotional singing groups for puja, festivals, and ceremonies." },
+  { id: "band_baja", icon: "Music2", color: "bg-amber-50", iconColor: "text-amber-600", title: "Band Baja", category: "band_baja", description: "Traditional band music for weddings, parades, and celebrations." },
+  { id: "panche_baja", icon: "Music2", color: "bg-orange-50", iconColor: "text-orange-600", title: "Panche Baja", category: "panche_baja", description: "Authentic Panche Baja musicians for cultural occasions." },
+  { id: "flower_decorator", icon: "Flower2", color: "bg-pink-50", iconColor: "text-pink-600", title: "Flower Decorator", category: "flower_decorator", description: "Beautiful floral decoration for weddings and special events." },
+  { id: "half_catering", icon: "Utensils", color: "bg-yellow-50", iconColor: "text-yellow-600", title: "Half Catering", category: "half_catering", description: "Flexible catering packages for small and medium gatherings." },
 
   // Professional Services
   { id: "accountant", icon: "Calculator", color: "bg-emerald-50", iconColor: "text-emerald-600", title: "Accountant", category: "accountant", description: "Professional accounting and financial services." },
@@ -109,11 +118,11 @@ export const services = [
 export const categoryGroups = [
   {
     group: "Home & Repair Services",
-    categories: ["carpenter", "painter", "tile_worker", "roofer", "locksmith", "pest_control", "ac_repair", "refrigerator_repair", "washing_machine_repair", "water_tank_cleaner"]
+    categories: ["carpenter", "painter", "tile_worker", "roofer", "locksmith", "pest_control", "ac_repair", "refrigerator_repair", "washing_machine_repair", "water_tank_cleaner", "toilet_tank_cleaner"]
   },
   {
     group: "Vehicle Services",
-    categories: ["motorcycle_mechanic", "car_mechanic", "bike_washer", "car_washer"]
+    categories: ["motorcycle_mechanic", "car_mechanic", "bike_washer", "car_washer", "car_rental", "bike_rental"]
   },
   {
     group: "Technology Services",
@@ -129,11 +138,11 @@ export const categoryGroups = [
   },
   {
     group: "Events & Creative",
-    categories: ["videographer", "event_planner", "dj", "catering_service", "cook", "photographer"]
+    categories: ["videographer", "event_planner", "dj", "catering_service", "cook", "bhajan_toli", "band_baja", "panche_baja", "flower_decorator", "half_catering", "photographer"]
   },
   {
     group: "Professional Services",
-    categories: ["accountant", "lawyer", "translator", "real_estate_agent", "designer", "software_developer", "web_developer"]
+    categories: ["accountant", "lawyer", "translator", "real_estate_agent", "designer", "interior_designer"]
   },
   {
     group: "Basic Services",

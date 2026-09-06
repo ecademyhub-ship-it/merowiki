@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import SectionHeading from "../components/common/SectionHeading";
 import ServiceCard from "../components/services/ServiceCard";
 import { services, categoryGroups } from "../data/services";
+import { getServiceSuggestions, normalize } from "../utils/serviceSearch";
 
 function Services() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,10 +16,23 @@ function Services() {
 
   // Filter services based on search term
   const filteredServices = useMemo(() => {
-    return services.filter((service) =>
-      service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const normalizedTerm = normalize(searchTerm);
+    const suggestedCategories = getServiceSuggestions(searchTerm).map((service) => service.category);
+
+    if (!normalizedTerm) {
+      return services;
+    }
+
+    return services.filter((service) => {
+      const searchableText = [
+        service.title,
+        service.category,
+        service.description,
+      ].join(" ").toLowerCase();
+
+      return searchableText.includes(normalizedTerm)
+        || suggestedCategories.includes(service.category);
+    });
   }, [searchTerm]);
 
   // Group filtered services
@@ -70,6 +84,20 @@ function Services() {
               }}
               className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             />
+            {searchTerm && getServiceSuggestions(searchTerm).length > 0 && (
+              <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-slate-200 bg-white p-1 shadow-card">
+                {getServiceSuggestions(searchTerm).map((suggestion) => (
+                  <button
+                    key={suggestion.category}
+                    type="button"
+                    onMouseDown={() => setSearchTerm(suggestion.title)}
+                    className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600"
+                  >
+                    {suggestion.title}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Category Filter Buttons */}

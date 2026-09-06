@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search, ArrowLeft, MapPin } from "lucide-react";
 import apiClient from "../api/client";
 import ProfessionalCard from "../components/professionals/ProfessionalCard";
+import { resolveServiceQuery } from "../utils/serviceSearch";
+import { getLocationSuggestions } from "../utils/locationSearch";
 
 function SearchResults() {
   const navigate = useNavigate();
@@ -16,24 +18,31 @@ function SearchResults() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [newSearch, setNewSearch] = useState("");
+  const [newLocation, setNewLocation] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [isLocationSuggestionsOpen, setIsLocationSuggestionsOpen] = useState(false);
 
-  const searchAliases = {
-    electrical: "electrician",
-    plumbing: "plumber",
-    education: "teacher",
-    photography: "photographer",
-    cleaning: "cleaner",
-    "computer repairer": "computer_repair",
-    automotive: "automobile_engineer",
-  };
+  const resolvedSearch = resolveServiceQuery(searchTerm);
 
-  const normalizedSearch =
-    searchAliases[searchTerm.trim().toLowerCase()] || searchTerm.trim();
+  useEffect(() => {
+    apiClient.get("/locations/")
+      .then(({ data }) => setLocations(data))
+      .catch(() => setLocations([]));
+  }, []);
 
   const handleSearch = () => {
-    if (newSearch.trim()) {
-      navigate(`/search?q=${encodeURIComponent(newSearch)}`);
+    if (newSearch.trim() || newLocation.trim()) {
+      const resolved = resolveServiceQuery(newSearch);
+      const params = new URLSearchParams();
+      if (newSearch.trim()) {
+        params.set(resolved.category ? "category" : "q", resolved.category || newSearch.trim());
+      }
+      if (newLocation.trim()) {
+        params.set("location", newLocation.trim());
+      }
+      navigate(`/search?${params.toString()}`);
       setNewSearch("");
+      setNewLocation("");
     }
   };
 
@@ -58,8 +67,10 @@ function SearchResults() {
           params.set("category", category);
         }
 
-        if (normalizedSearch) {
-          params.set("q", normalizedSearch);
+        if (resolvedSearch.category) {
+          params.set("category", resolvedSearch.category);
+        } else if (resolvedSearch.query) {
+          params.set("q", resolvedSearch.query);
         }
 
         if (locationTerm) {
@@ -83,7 +94,7 @@ function SearchResults() {
     };
 
     fetchFeatures();
-  }, [category, normalizedSearch, locationTerm]);
+  }, [category, resolvedSearch.category, resolvedSearch.query, locationTerm]);
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -134,7 +145,7 @@ function SearchResults() {
         </div>
 
         {/* Search Bar */}
-        <div className="mb-8 flex gap-2">
+        <div className="mb-8 flex flex-col gap-2 sm:flex-row">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <input
@@ -145,6 +156,39 @@ function SearchResults() {
               onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             />
+          </div>
+          <div className="relative flex-1">
+            <MapPin className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Location"
+              value={newLocation}
+              onChange={(event) => {
+                setNewLocation(event.target.value);
+                setIsLocationSuggestionsOpen(true);
+              }}
+              onFocus={() => setIsLocationSuggestionsOpen(true)}
+              onBlur={() => setTimeout(() => setIsLocationSuggestionsOpen(false), 150)}
+              onKeyDown={(event) => event.key === "Enter" && handleSearch()}
+              className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            />
+            {isLocationSuggestionsOpen && getLocationSuggestions(locations, newLocation).length > 0 && (
+              <div className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-lg border border-slate-200 bg-white p-1 shadow-card">
+                {getLocationSuggestions(locations, newLocation).map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onMouseDown={() => {
+                      setNewLocation(suggestion);
+                      setIsLocationSuggestionsOpen(false);
+                    }}
+                    className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <button
             onClick={handleSearch}
