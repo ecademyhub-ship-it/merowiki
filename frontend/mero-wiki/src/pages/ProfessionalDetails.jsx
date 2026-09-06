@@ -1,5 +1,8 @@
 import {
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  X,
   MapPin,
   Star,
   Phone,
@@ -21,6 +24,7 @@ function ProfessionalDetails() {
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [loading, setLoading] = useState(true);
   const [profileImageFailed, setProfileImageFailed] = useState(false);
+  const [selectedWorkPhoto, setSelectedWorkPhoto] = useState(null);
 
   useEffect(() => {
     const fetchProfessional = async () => {
@@ -99,6 +103,10 @@ function ProfessionalDetails() {
       ? professional.profile
       : `${backendOrigin}${professional.profile}`
     : "";
+  const workPhotoUrls = [1, 2, 3, 4, 5]
+    .map((photoNumber) => professional[`work_photo_${photoNumber}`])
+    .filter(Boolean)
+    .map((photo) => (photo.startsWith("http") ? photo : `${backendOrigin}${photo}`));
 
   const contactPhone =
     professional.phone ||
@@ -247,6 +255,39 @@ function ProfessionalDetails() {
             </p>
           </div>
 
+          {workPhotoUrls.length > 0 && (
+            <div className="border-t border-gray-100 p-6 sm:p-8">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">Work photos</h2>
+                  <p className="mt-1 text-sm text-gray-500">A closer look at recent work</p>
+                </div>
+                <span className="shrink-0 text-sm text-gray-500">{workPhotoUrls.length} photos</span>
+              </div>
+
+              <div className="mt-5 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory">
+                {workPhotoUrls.map((photoUrl, index) => (
+                  <button
+                    key={photoUrl}
+                    type="button"
+                    onClick={() => setSelectedWorkPhoto(index)}
+                    className="group relative h-40 w-32 shrink-0 snap-start overflow-hidden rounded-xl bg-gray-100 text-left shadow-sm ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:h-48 sm:w-40"
+                    aria-label={`Open work photo ${index + 1}`}
+                  >
+                    <img
+                      src={photoUrl}
+                      alt={`${professional.name}'s work ${index + 1}`}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-3 pb-2 pt-8 text-xs font-medium text-white">
+                      {index + 1} / {workPhotoUrls.length}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Services */}
           <div className="border-t border-gray-100 p-6 sm:p-8">
             <h2 className="text-xl font-semibold text-gray-900">
@@ -322,6 +363,56 @@ function ProfessionalDetails() {
         </section>
 
       </div>
+
+      {selectedWorkPhoto !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 sm:p-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Work photo viewer"
+          onClick={() => setSelectedWorkPhoto(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedWorkPhoto(null)}
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+            aria-label="Close photo viewer"
+          >
+            <X size={24} />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setSelectedWorkPhoto((selectedWorkPhoto - 1 + workPhotoUrls.length) % workPhotoUrls.length);
+            }}
+            className="absolute left-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:left-6"
+            aria-label="Previous work photo"
+          >
+            <ChevronLeft size={28} />
+          </button>
+          <img
+            src={workPhotoUrls[selectedWorkPhoto]}
+            alt={`${professional.name}'s work ${selectedWorkPhoto + 1}`}
+            className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          />
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              setSelectedWorkPhoto((selectedWorkPhoto + 1) % workPhotoUrls.length);
+            }}
+            className="absolute right-3 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white sm:right-6"
+            aria-label="Next work photo"
+          >
+            <ChevronRight size={28} />
+          </button>
+          <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/80">
+            {selectedWorkPhoto + 1} / {workPhotoUrls.length}
+          </span>
+        </div>
+      )}
     </main>
   );
 }

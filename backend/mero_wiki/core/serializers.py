@@ -158,7 +158,11 @@ class FeaturesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Features
-        fields = ['id','category','name','profile','phone','description','location','is_available','rating','review_count']
+        fields = [
+            'id', 'category', 'name', 'profile',
+            'work_photo_1', 'work_photo_2', 'work_photo_3', 'work_photo_4', 'work_photo_5',
+            'phone', 'description', 'location', 'is_available', 'rating', 'review_count',
+        ]
 
 
 class ReviewSerializer(serializers.ModelSerializer):
