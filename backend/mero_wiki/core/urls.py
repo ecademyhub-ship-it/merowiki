@@ -1,11 +1,10 @@
 from django.urls import path, include
-from core.views import UserView, loginview, welcomeview, changepasswordview, passwordchangelink, resetpasswordview, logoutview, ActivateAccountView,FeaturesView,LocationsView,ReviewsView,GoogleLoginView
-from rest_framework_simplejwt.views import TokenRefreshView
+from core.views import UserView, loginview, RefreshTokenView, welcomeview, changepasswordview, passwordchangelink, resetpasswordview, logoutview, ActivateAccountView,FeaturesView,LocationsView,ReviewsView,GoogleLoginView
 
 urlpatterns = [
     path("register/", UserView.as_view(), name="register"),
     path("login/", loginview.as_view(), name="login"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/refresh/", RefreshTokenView.as_view(), name="token_refresh"),
     path("welcome/", welcomeview.as_view(), name="welcome"),
     path("google-login/", GoogleLoginView.as_view(), name="google-login"),
     path("logout/", logoutview.as_view(), name="logout"),

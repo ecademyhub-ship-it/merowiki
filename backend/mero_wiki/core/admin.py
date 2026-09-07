@@ -4,7 +4,7 @@ from core.models import user,Features,Review
 
 @admin.register(user)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'full_name', 'google_id','tc', 'is_active', 'is_admin','is_staff','created_at', 'updated_at')
+    list_display = ('email', 'full_name', 'google_id','tc', 'is_active', 'is_admin','is_staff','created_at', 'last_login', 'updated_at')
     list_filter = ('is_admin', 'is_active')
     search_fields = ('email', 'full_name')
     ordering = ('email',)
