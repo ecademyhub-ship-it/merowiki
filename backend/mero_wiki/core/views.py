@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer,FeaturesSerializer,ReviewSerializer,ReviewCreateSerializer
-from django.contrib.auth import authenticate, update_last_login
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import update_last_login
 from .error import AccountErrorRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
