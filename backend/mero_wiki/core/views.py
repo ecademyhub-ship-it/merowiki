@@ -4,10 +4,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import UserSerializer, loginserializer,welcomeSerializer,ChangePasswordSerializer,linkserializer, resetpasswordserializer,FeaturesSerializer,ReviewSerializer,ReviewCreateSerializer
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, update_last_login
 from .error import AccountErrorRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.views import TokenRefreshView as SimpleJWTTokenRefreshView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Q
 from django.db.models import Avg
@@ -82,10 +83,17 @@ class loginview(APIView):
             if user is None:
                 return Response({'msg':'invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
+                update_last_login(None, user)
                 token=get_tokens_for_user(user)
                 return Response({'msg':'login successful', 'token': token}, status=status.HTTP_200_OK)
 
         return Response({'msg':'login failed'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RefreshTokenView(SimpleJWTTokenRefreshView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    renderer_classes = [AccountErrorRenderer]
     
 class welcomeview(APIView):
     renderer_classes = [AccountErrorRenderer]

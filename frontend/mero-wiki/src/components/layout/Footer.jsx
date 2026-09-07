@@ -76,7 +76,7 @@ function Footer() {
           <div>
             <h3 className="font-semibold">
               Contact: 
-             ecademyhub@gmail.com            </h3>
+             merowiki@gmail.com            </h3>
 
             <p className="mt-3 text-sm leading-6">
               Find reliable local professionals for your everyday needs.
