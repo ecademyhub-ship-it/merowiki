@@ -60,7 +60,7 @@ function ProfessionalCard({
   };
 
   return (
-    <article className="group relative h-full rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md">
+    <article className="group relative h-full rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-md">
 
       {/* Favorite */}
       <button
@@ -84,7 +84,10 @@ function ProfessionalCard({
       </button>
 
       {/* Profile */}
-      <Link to={`/professionals/${id}`}>
+      <Link
+        to={`/professionals/${id}`}
+        className="block rounded-xl outline-none transition duration-150 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-blue-500"
+      >
         <div className="flex items-start gap-4 pr-10">
 
           <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-lg font-bold text-blue-600">

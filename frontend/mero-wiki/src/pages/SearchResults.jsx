@@ -239,6 +239,7 @@ function SearchResults() {
                     key={feature.id}
                     id={feature.id}
                     name={feature.name}
+                    profile={feature.profile}
                     profession={feature.profession}
                     rating={feature.rating}
                     location={feature.location}
