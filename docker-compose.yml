@@ -1,0 +1,65 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      DJANGO_ENV: production
+      DEBUG: "False"
+      ALLOWED_HOSTS: merowiki.com,www.merowiki.com,backend
+      CORS_ALLOWED_ORIGINS: https://merowiki.com,https://www.merowiki.com
+      CSRF_TRUSTED_ORIGINS: https://merowiki.com,https://www.merowiki.com
+      SECURE_SSL_REDIRECT: "True"
+      SECURE_HSTS_SECONDS: "31536000"
+      SECURE_HSTS_INCLUDE_SUBDOMAINS: "True"
+      SECURE_HSTS_PRELOAD: "True"
+      SESSION_COOKIE_SECURE: "True"
+      CSRF_COOKIE_SECURE: "True"
+      SESSION_COOKIE_HTTPONLY: "True"
+      CSRF_COOKIE_HTTPONLY: "True"
+      SECURE_PROXY_SSL_HEADER: HTTP_X_FORWARDED_PROTO,https
+    command: >
+      sh -c "cd mero_wiki &&
+      python manage.py migrate --noinput &&
+      python manage.py collectstatic --noinput &&
+      gunicorn mero_wiki.wsgi:application --bind 0.0.0.0:8000 --workers 2"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./backend/mero_wiki/media:/app/mero_wiki/media
+      - backend_static:/app/mero_wiki/staticfiles
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import socket
+          with socket.create_connection(("127.0.0.1", 8000), timeout=5):
+              pass
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ./frontend/mero-wiki
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - backend_static:/var/www/static:ro
+      - ./backend/mero_wiki/media:/var/www/media:ro
+
+volumes:
+  backend_static:
