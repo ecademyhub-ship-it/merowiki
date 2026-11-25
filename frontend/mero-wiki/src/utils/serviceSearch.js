@@ -1,4 +1,4 @@
-import { services } from "../data/services";
+import { services } from "../data/services.js";
 
 const normalize = (value) => value
   .toLowerCase()
