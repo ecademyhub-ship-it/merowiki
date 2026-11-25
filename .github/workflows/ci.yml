@@ -49,3 +49,40 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: mero_wiki.test_settings
         run: python manage.py test
+
+  deploy:
+    name: Deploy production
+    needs: [frontend, backend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -eu
+          test -n "$DEPLOY_SSH_KEY" || { echo "DEPLOY_SSH_KEY is not configured"; exit 1; }
+          test -n "$DEPLOY_KNOWN_HOSTS" || { echo "DEPLOY_KNOWN_HOSTS is not configured"; exit 1; }
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
+
+      - name: Deploy over SSH
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+        run: |
+          set -eu
+          test -n "$DEPLOY_HOST" || { echo "DEPLOY_HOST is not configured"; exit 1; }
+          test -n "$DEPLOY_USER" || { echo "DEPLOY_USER is not configured"; exit 1; }
+          test -n "$DEPLOY_PATH" || { echo "DEPLOY_PATH is not configured"; exit 1; }
+          remote_path="$(printf '%q' "$DEPLOY_PATH")"
+          ssh -i "$HOME/.ssh/deploy_key" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -- "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd -- $remote_path && git pull --ff-only origin main && docker compose up -d --build --remove-orphans"
