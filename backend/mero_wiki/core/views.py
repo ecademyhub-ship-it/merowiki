@@ -11,7 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.views import TokenRefreshView as SimpleJWTTokenRefreshView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from django.db.models import Q
+from django.db.models import F, Q
 from django.db.models import Avg
 from rest_framework_simplejwt.tokens import  RefreshToken
 from django.utils.encoding import force_bytes, force_str
@@ -248,7 +248,7 @@ class FeaturesView(APIView):
 
         features = Features.objects.annotate(
             avg_rating=Avg('reviews__rating')
-        ).order_by('-avg_rating', 'name')
+        ).order_by(F('avg_rating').desc(nulls_last=True), 'name')
 
         # Filter by exact category
         if category:

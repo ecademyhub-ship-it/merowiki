@@ -218,6 +218,7 @@ function Professionals() {
                 rating={professional.rating}
                 location={professional.location}
                 available={professional.available}
+                profile={professional.profile}
               />
             ))}
           </div>
